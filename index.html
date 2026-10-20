@@ -1,388 +1,479 @@
 <!DOCTYPE html>
 <html lang="rw">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OB Shop - Quality & Convenience</title>
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary: #003366;
-            --accent: #FFB800;
-            --danger: #E53935;
-            --success: #25D366;
-            --bg-light: #F8F9FA;
-            --card-bg: #FFFFFF;
-            --text-dark: #1A1A1A;
-            --text-muted: #707070;
-            --border-color: #EAEAEA;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OB Shop - Automatic Orders & Reports</title>
 
-        /* Dark Mode Theme */
-        body.dark-mode {
-            --bg-light: #121212;
-            --card-bg: #1E1E1E;
-            --text-dark: #F5F5F5;
-            --text-muted: #B0B0B0;
-            --border-color: #333333;
-        }
+  <!-- Firebase Database SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; transition: background-color 0.2s, color 0.2s; }
-        body { background-color: var(--bg-light); color: var(--text-dark); padding-bottom: 75px; }
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: #f4f6f8; color: #1e293b; transition: background 0.3s, color 0.3s; padding-bottom: 70px; }
+    body.dark-mode { background-color: #0f172a; color: #f8fafc; }
 
-        /* Header */
-        header { background: var(--primary); color: white; padding: 10px 12px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-        .logo { font-size: 20px; font-weight: 800; color: #fff; cursor: pointer; user-select: none; letter-spacing: 0.5px; }
-        .logo span { color: var(--accent); }
-        
-        .header-actions { display: flex; align-items: center; gap: 8px; }
-        .lang-select { background: rgba(255,255,255,0.2); color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; outline: none; cursor: pointer; font-weight: 700; }
-        .lang-select option { color: #000; background: #fff; }
-        .theme-toggle-btn { background: rgba(255,255,255,0.2); color: var(--accent); border: none; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; }
+    /* Header */
+    header { background: #003366; color: white; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .logo { font-size: 20px; font-weight: 800; cursor: pointer; user-select: none; }
+    .logo span { color: #f59e0b; }
+    .header-actions { display: flex; align-items: center; gap: 10px; }
+    .lang-select { background: rgba(255,255,255,0.15); color: white; border: none; padding: 5px 8px; border-radius: 6px; font-size: 12px; }
+    .theme-btn { background: none; border: none; color: white; font-size: 18px; cursor: pointer; }
 
-        /* Search Box & Camera */
-        .search-box { display: flex; background: #fff; border-radius: 25px; padding: 5px 12px; align-items: center; justify-content: space-between; }
-        .search-box-left { display: flex; align-items: center; gap: 6px; flex: 1; }
-        .search-box input { border: none; outline: none; width: 100%; padding: 4px 0; font-size: 13px; color: #1A1A1A; }
-        .search-box i { color: #707070; font-size: 14px; }
-        .camera-btn { cursor: pointer; color: var(--primary); font-size: 15px; padding: 2px 4px; border-left: 1px solid #DDD; margin-left: 4px; }
+    /* Top Ticker */
+    .ticker-bar { background: #0f172a; color: #f59e0b; padding: 6px 0; overflow: hidden; white-space: nowrap; font-size: 12px; font-weight: 600; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .ticker-text { display: inline-block; animation: ticker 20s linear infinite; }
+    .ticker-text span { margin-right: 30px; }
+    @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        /* Categories Bar */
-        .categories-bar { display: flex; gap: 6px; overflow-x: auto; padding-top: 8px; padding-bottom: 4px; scrollbar-width: none; }
-        .categories-bar::-webkit-scrollbar { display: none; }
-        .cat-btn { background: rgba(255,255,255,0.15); color: white; border: none; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; white-space: nowrap; cursor: pointer; }
-        .cat-btn.active { background: var(--accent); color: #000; font-weight: 800; }
+    /* Search & Categories */
+    .search-container { padding: 12px 16px; background: #003366; }
+    .search-box { display: flex; background: white; border-radius: 20px; padding: 6px 14px; align-items: center; gap: 8px; }
+    .search-box input { border: none; outline: none; width: 100%; font-size: 14px; color: #333; }
 
-        /* Section & Product Grid (3-Column Layout) */
-        .section-header { padding: 10px 12px 6px; display: flex; justify-content: space-between; align-items: center; }
-        .section-title { font-size: 14px; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; }
-        body.dark-mode .section-title { color: var(--accent); }
+    .categories { display: flex; gap: 8px; padding: 10px 16px; overflow-x: auto; white-space: nowrap; background: #002244; }
+    .cat-btn { background: rgba(255,255,255,0.2); color: white; border: none; padding: 6px 14px; border-radius: 16px; font-size: 12px; font-weight: 600; cursor: pointer; }
+    .cat-btn.active { background: #f59e0b; color: #000; }
 
-        .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 0 6px; }
-        .product-card { background: var(--card-bg); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid var(--border-color); box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
-        .product-card img { width: 100%; height: 105px; object-fit: cover; }
-        .product-info { padding: 6px; }
-        .badge-container { display: flex; gap: 2px; flex-wrap: wrap; margin-bottom: 4px; }
-        .badge-verified { background: #E3F2FD; color: #0D47A1; font-size: 8px; font-weight: 700; padding: 1px 4px; border-radius: 3px; text-transform: uppercase; }
-        .badge-shipping { background: #E8F5E9; color: #1B5E20; font-size: 8px; font-weight: 700; padding: 1px 4px; border-radius: 3px; text-transform: uppercase; }
-        .product-title { font-size: 11px; font-weight: 600; line-height: 1.2; color: var(--text-dark); margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 26px; }
-        .rating-sold { font-size: 9px; color: var(--text-muted); margin-bottom: 4px; display: flex; align-items: center; gap: 2px; }
-        .rating-sold i { color: var(--accent); font-size: 8px; }
-        .price-row { display: flex; flex-direction: column; align-items: flex-start; margin-top: 2px; }
-        .current-price { color: var(--danger); font-size: 12px; font-weight: 800; }
-        .old-price { color: var(--text-muted); font-size: 9px; text-decoration: line-through; }
-        .order-btn { width: 100%; background: var(--success); color: white; border: none; padding: 6px 2px; font-weight: 700; font-size: 10px; border-radius: 4px; margin-top: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 3px; }
+    /* Hero Promo Banner */
+    .hero-banner { margin: 12px 16px; background: linear-gradient(135deg, #4f46e5, #7c3aed); border-radius: 16px; padding: 18px; color: white; position: relative; overflow: hidden; }
+    .hero-tag { background: #ef4444; font-size: 10px; font-weight: bold; padding: 3px 8px; border-radius: 10px; text-transform: uppercase; }
+    .hero-banner h3 { font-size: 18px; margin: 8px 0 4px 0; font-weight: 800; }
+    .hero-banner p { font-size: 12px; opacity: 0.9; margin-bottom: 10px; }
 
-        /* Bottom Nav */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card-bg); display: flex; justify-content: space-around; padding: 8px 0; border-top: 1px solid var(--border-color); z-index: 100; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); text-decoration: none; font-size: 10px; font-weight: 500; cursor: pointer; }
-        .nav-item.active { color: var(--primary); font-weight: 700; }
-        body.dark-mode .nav-item.active { color: var(--accent); }
-        .nav-item i { font-size: 16px; margin-bottom: 2px; }
+    /* Section Title */
+    .section-title { font-size: 14px; font-weight: 800; padding: 10px 16px 4px; text-transform: uppercase; color: #003366; letter-spacing: 0.5px; }
+    body.dark-mode .section-title { color: #f59e0b; }
 
-        /* Admin Modal */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center; }
-        .modal-content { background: var(--card-bg); color: var(--text-dark); padding: 20px; border-radius: 12px; width: 90%; max-width: 400px; max-height: 85vh; overflow-y: auto; }
-        .modal-content h3 { margin-bottom: 12px; color: var(--primary); font-size: 16px; }
-        body.dark-mode .modal-content h3 { color: var(--accent); }
-        .modal-content input, .modal-content select { width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid var(--border-color); background: var(--bg-light); color: var(--text-dark); border-radius: 6px; font-size: 13px; }
-        .modal-content button { width: 100%; padding: 10px; background: var(--primary); color: white; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; }
-        .delete-btn { background: var(--danger) !important; padding: 4px 8px !important; font-size: 10px !important; width: auto !important; }
-        .admin-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border-color); font-size: 12px; }
-        .no-products { text-align: center; padding: 40px 10px; color: var(--text-muted); font-size: 13px; grid-column: span 3; }
-    </style>
+    /* 3-Column Product Grid */
+    .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 8px 12px; }
+    .product-card { background: white; border-radius: 10px; padding: 6px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 1px 4px rgba(0,0,0,0.05); overflow: hidden; }
+    body.dark-mode .product-card { background: #1e293b; }
+    .product-img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 8px; background: #e2e8f0; }
+    .badge-wrap { display: flex; gap: 4px; margin-top: 4px; }
+    .badge { font-size: 8px; font-weight: bold; padding: 2px 4px; border-radius: 4px; }
+    .badge-ob { background: #dbeafe; color: #1e40af; }
+    .badge-free { background: #dcfce7; color: #166534; }
+    .product-title { font-size: 11px; font-weight: 700; margin: 4px 0 2px; line-height: 1.2; text-transform: capitalize; }
+    .rating { font-size: 9px; color: #f59e0b; margin-bottom: 2px; }
+    .price-wrap { display: flex; flex-direction: column; }
+    .price { font-size: 11px; font-weight: 800; color: #dc2626; }
+    .old-price { font-size: 9px; text-decoration: line-through; color: #94a3b8; }
+    .order-btn { background: #25d366; color: white; border: none; border-radius: 6px; padding: 6px; font-size: 10px; font-weight: bold; cursor: pointer; margin-top: 6px; display: flex; align-items: center; justify-content: center; gap: 4px; width: 100%; }
+
+    /* Modal Overlay & Forms */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; align-items: flex-end; justify-content: center; z-index: 1000; backdrop-filter: blur(2px); }
+    .modal-overlay.active { display: flex; }
+    .modal-card { background: white; width: 100%; max-width: 500px; border-top-left-radius: 20px; border-top-right-radius: 20px; padding: 20px; max-height: 90vh; overflow-y: auto; animation: slideUp 0.3s ease-out; }
+    body.dark-mode .modal-card { background: #1e293b; color: white; }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .modal-title-wrap { display: flex; align-items: center; gap: 10px; }
+    .modal-title { font-size: 16px; font-weight: bold; }
+    .modal-sub { font-size: 11px; color: #64748b; }
+    .close-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: #94a3b8; }
+
+    .selected-product-box { background: #f8fafc; border-radius: 12px; padding: 10px; display: flex; gap: 12px; align-items: center; margin-bottom: 14px; border: 1px solid #e2e8f0; }
+    body.dark-mode .selected-product-box { background: #0f172a; border-color: #334155; }
+    .selected-img { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; }
+
+    .form-group { margin-bottom: 12px; text-align: left; }
+    .form-group label { font-size: 12px; font-weight: bold; display: block; margin-bottom: 4px; }
+    .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 13px; outline: none; }
+    body.dark-mode .form-group input, body.dark-mode .form-group select { background: #0f172a; border-color: #334155; color: white; }
+
+    .momo-info { background: #fef3c7; border: 1px solid #fde047; padding: 10px; border-radius: 8px; font-size: 11px; color: #92400e; margin-bottom: 14px; }
+    body.dark-mode .momo-info { background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.3); color: #fef08a; }
+
+    .submit-order-btn { background: #059669; color: white; border: none; width: 100%; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+
+    /* Admin Reports Table */
+    .report-card { background: #003366; color: white; padding: 12px; border-radius: 10px; display: flex; justify-content: space-around; margin-bottom: 15px; }
+    .report-box { text-align: center; }
+    .report-box h4 { font-size: 11px; opacity: 0.8; }
+    .report-box p { font-size: 16px; font-weight: bold; color: #f59e0b; }
+
+    .order-table { width: 100%; border-collapse: collapse; font-size: 11px; text-align: left; margin-top: 10px; }
+    .order-table th, .order-table td { padding: 8px; border-bottom: 1px solid #e2e8f0; }
+    body.dark-mode .order-table th, body.dark-mode .order-table td { border-color: #334155; }
+    .status-badge { padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 9px; cursor: pointer; }
+    .status-pending { background: #fef3c7; color: #92400e; }
+    .status-completed { background: #dcfce7; color: #166534; }
+
+    /* Bottom Navigation */
+    .nav-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: white; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-around; padding: 8px 0; z-index: 90; }
+    body.dark-mode .nav-bar { background: #0f172a; border-color: #1e293b; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; color: #64748b; font-size: 10px; text-decoration: none; cursor: pointer; }
+    .nav-item.active { color: #003366; font-weight: bold; }
+    body.dark-mode .nav-item.active { color: #f59e0b; }
+  </style>
 </head>
 <body>
 
-    <header>
-        <div class="header-top">
-            <div class="logo" onclick="clickLogo()">OB <span>SHOP</span></div>
-            <div class="header-actions">
-                <select class="lang-select" id="langSelect" onchange="switchLanguage()">
-                    <option value="rw">RW</option>
-                    <option value="en">EN</option>
-                    <option value="fr">FR</option>
-                </select>
-                <button class="theme-toggle-btn" id="themeBtn" onclick="switchTheme()">
-                    <i class="fa-solid fa-moon"></i>
-                </button>
-            </div>
-        </div>
-        
-        <div class="search-box">
-            <div class="search-box-left">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="searchInput" onkeyup="filterItems()" placeholder="Shakisha igicuruzwa...">
-            </div>
-            <div class="camera-btn" onclick="openCamera()"><i class="fa-solid fa-camera"></i></div>
-            <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none;" onchange="onCameraUpload(event)">
-        </div>
-
-        <div class="categories-bar">
-            <button class="cat-btn active" id="btnCatAll" onclick="selectCat('all', this)">Byose</button>
-            <button class="cat-btn" id="btnCatShoes" onclick="selectCat('Inkweto', this)">Inkweto</button>
-            <button class="cat-btn" id="btnCatFood" onclick="selectCat('Ibyo Kurya', this)">Ibyo Kurya</button>
-            <button class="cat-btn" id="btnCatClothes" onclick="selectCat('Imyenda', this)">Imyenda</button>
-            <button class="cat-btn" id="btnCatElec" onclick="selectCat('Electronics', this)">Electronics</button>
-            <button class="cat-btn" id="btnCatTools" onclick="selectCat('Ibikoresho', this)">Ibikoresho</button>
-        </div>
-    </header>
-
-    <div class="section-header">
-        <div class="section-title" id="secTitle">Ibicuruzwa Byose</div>
+  <!-- Header -->
+  <header>
+    <div class="logo" id="logoBtn">OB <span>SHOP</span></div>
+    <div class="header-actions">
+      <select class="lang-select" id="langSelect">
+        <option value="rw">RW</option>
+        <option value="en">EN</option>
+        <option value="fr">FR</option>
+      </select>
+      <button class="theme-btn" id="themeBtn">🌙</button>
     </div>
+  </header>
 
-    <div class="product-grid" id="productGrid"></div>
-
-    <nav class="bottom-nav">
-        <a onclick="goNav('home')" class="nav-item active" id="navHome"><i class="fa-solid fa-house"></i><span id="txtHome">Home</span></a>
-        <a onclick="goNav('shop')" class="nav-item" id="navShop"><i class="fa-solid fa-store"></i><span id="txtShop">Shop</span></a>
-        <a onclick="goNav('cart')" class="nav-item"><i class="fa-solid fa-cart-shopping"></i><span id="txtCart">Cart</span></a>
-    </nav>
-
-    <!-- Admin Panel Modal -->
-    <div class="modal" id="adminModal">
-        <div class="modal-content">
-            <h3 id="txtAdminTitle">OB Shop - Ubuyobozi</h3>
-            <input type="text" id="pName" placeholder="Izina ry'igicuruzwa">
-            <select id="pCat">
-                <option value="Inkweto">Inkweto</option>
-                <option value="Ibyo Kurya">Ibyo Kurya</option>
-                <option value="Imyenda">Imyenda</option>
-                <option value="Electronics">Electronics</option>
-                <option value="Ibikoresho">Ibikoresho</option>
-            </select>
-            <input type="text" id="pPrice" placeholder="Igiciro (ex: 15,000 RWF)">
-            <input type="text" id="pOldPrice" placeholder="Igiciro cya kera">
-            <input type="text" id="pImage" placeholder="Link y'ifoto (URL)">
-            <button onclick="saveNewProduct()" id="txtBtnAdd">Ongeramo Igicuruzwa</button>
-
-            <hr style="margin:12px 0;">
-            <h4 style="font-size:12px; margin-bottom:6px;" id="txtManageTitle">Cunga Ibicuruzwa:</h4>
-            <div id="adminList"></div>
-
-            <button onclick="closeAdminModal()" style="background:#707070; margin-top:10px;" id="txtBtnClose">Bifunge</button>
-        </div>
+  <!-- Top Announcement Ticker -->
+  <div class="ticker-bar">
+    <div class="ticker-text">
+      <span>⚡ <b>DISCOUNT:</b> Poromosiyo ku bicuruzwa byose!</span>
+      <span>🔥 <b>IBISHYA:</b> Collection nshya yageze muri OB Shop!</span>
+      <span>🚚 <b>DELIVERY:</b> Kugeza ibicuruzwa ku buntu mu Kigali!</span>
     </div>
+  </div>
 
-    <script>
-        const WHATSAPP_NUM = "250782393143";
-        const ADMIN_PWD = "obshop123";
-        let activeCategory = "all";
+  <!-- Search & Categories -->
+  <div class="search-container">
+    <div class="search-box">
+      🔍 <input type="text" id="searchInput" placeholder="Shakisha igicuruzwa...">
+    </div>
+  </div>
+  <div class="categories" id="catList">
+    <button class="cat-btn active" onclick="filterCat('All')">Byose</button>
+    <button class="cat-btn" onclick="filterCat('Shoes')">Inkweto</button>
+    <button class="cat-btn" onclick="filterCat('Clothes')">Imyenda</button>
+    <button class="cat-btn" onclick="filterCat('Electronics')">Ibyuma</button>
+  </div>
 
-        const dict = {
-            rw: {
-                search: "Shakisha igicuruzwa...",
-                catAll: "Byose", catShoes: "Inkweto", catFood: "Ibyo Kurya", catClothes: "Imyenda", catElec: "Electronics", catTools: "Ibikoresho",
-                titleAll: "Ibicuruzwa Byose", order: "Tumiza", home: "Home", shop: "Shop", cart: "Cart",
-                noProds: "Nta gicuruzwa kiri mu nsi y'iki cyiciro.",
-                adminTitle: "OB Shop - Ubuyobozi", addBtn: "Ongeramo Igicuruzwa", manageTitle: "Cunga Ibicuruzwa:", closeBtn: "Bifunge"
-            },
-            en: {
-                search: "Search product...",
-                catAll: "All", catShoes: "Shoes", catFood: "Food", catClothes: "Clothes", catElec: "Electronics", catTools: "Accessories",
-                titleAll: "All Products", order: "Order", home: "Home", shop: "Shop", cart: "Cart",
-                noProds: "No products in this category.",
-                adminTitle: "OB Shop - Management", addBtn: "Add Product", manageTitle: "Manage Products:", closeBtn: "Close"
-            },
-            fr: {
-                search: "Rechercher un produit...",
-                catAll: "Tous", catShoes: "Chaussures", catFood: "Nourriture", catClothes: "Vêtements", catElec: "Électronique", catTools: "Accessoires",
-                titleAll: "Tous les Produits", order: "Commander", home: "Accueil", shop: "Boutique", cart: "Panier",
-                noProds: "Aucun produit dans cette catégorie.",
-                adminTitle: "OB Shop - Administration", addBtn: "Ajouter Produit", manageTitle: "Gérer Produits:", closeBtn: "Fermer"
-            }
-        };
+  <!-- Hero Banner -->
+  <div class="hero-banner">
+    <span class="hero-tag">POROMOSIYO Y'UMUNSI</span>
+    <h3>Smart Watch & Imyenda Bishya!</h3>
+    <p>Gana ibicuruzwa ku giciro cyagabanutse cyane uyu munsi.</p>
+  </div>
 
-        function switchTheme() {
-            document.body.classList.toggle('dark-mode');
-            const isDark = document.body.classList.contains('dark-mode');
-            localStorage.setItem('ob_dark', isDark);
-            document.getElementById('themeBtn').innerHTML = isDark ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+  <div class="section-title">IBICURUZWA BYOSE</div>
+
+  <!-- Product Grid -->
+  <div class="product-grid" id="productGrid"></div>
+
+  <!-- Order Modal -->
+  <div class="modal-overlay" id="orderModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span style="font-size:24px">💬</span>
+          <div>
+            <div class="modal-title">Kutumiza ku WhatsApp</div>
+            <div class="modal-sub">OB Shop Direct Delivery</div>
+          </div>
+        </div>
+        <button class="close-btn" onclick="closeOrderModal()">✕</button>
+      </div>
+
+      <div class="selected-product-box">
+        <img id="modalProdImg" class="selected-img" src="" alt="Product">
+        <div>
+          <div id="modalProdName" style="font-weight: bold; font-size: 13px;"></div>
+          <div id="modalProdPrice" style="color: #0284c7; font-weight: 800; font-size: 13px;"></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Izina Ryose *</label>
+        <input type="text" id="custName" placeholder="Urugero: Keza Alice">
+      </div>
+
+      <div class="form-group">
+        <label>Nimero ya Telefoni (MTN / Airtel) *</label>
+        <input type="tel" id="custPhone" placeholder="078... cyangwa 073...">
+      </div>
+
+      <div class="form-group">
+        <label>Aho Utuye / Delivery Location *</label>
+        <input type="text" id="custLoc" placeholder="Urugero: Kigali, Nyarugenge">
+      </div>
+
+      <div class="momo-info">
+        💡 <b>Uburyo bwo Kwishyura (MoMo):</b><br>
+        Icyitonderwa: Uzahita uyoborwa kuri WhatsApp kugira ngo uhewe Code ya MoMo Pay (MTN/Airtel) cyangwa ubone risiti yawe.
+      </div>
+
+      <button class="submit-order-btn" onclick="sendWhatsAppOrder()">
+        <span>💬 Komeza kuri WhatsApp</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Admin Panel Modal -->
+  <div class="modal-overlay" id="adminModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">⚙️ Admin Dashboard & Reports</div>
+        <button class="close-btn" onclick="closeAdminModal()">✕</button>
+      </div>
+
+      <!-- Sales Reports -->
+      <div class="report-card">
+        <div class="report-box">
+          <h4>TOTAL ORDERS</h4>
+          <p id="repTotalOrders">0</p>
+        </div>
+        <div class="report-box">
+          <h4>TOTAL REVENUE</h4>
+          <p id="repTotalRevenue">0 RWF</p>
+        </div>
+      </div>
+
+      <h4 style="font-size:12px; margin-bottom:6px;">📦 LIVE ORDERS LIST</h4>
+      <div style="overflow-x:auto;">
+        <table class="order-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Customer</th>
+              <th>Item</th>
+              <th>Loc</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="ordersTableBody">
+            <tr><td colspan="5" style="text-align:center;">Nta oda iraza...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <hr style="margin: 20px 0; opacity:0.2;">
+
+      <h4 style="font-size:12px; margin-bottom:8px;">➕ ONGERAMO IGICURUZWA NSHYA</h4>
+      <div class="form-group">
+        <label>Izina ry'Igicuruzwa</label>
+        <input type="text" id="admName" placeholder="Urugero: Smart Watch">
+      </div>
+      <div class="form-group">
+        <label>Igiciro (RWF)</label>
+        <input type="number" id="admPrice" placeholder="35000">
+      </div>
+      <div class="form-group">
+        <label>Igiciro cya Kera (Optional)</label>
+        <input type="number" id="admOldPrice" placeholder="40000">
+      </div>
+      <div class="form-group">
+        <label>Image URL (Link y'ishusho)</label>
+        <input type="text" id="admImg" placeholder="https://...">
+      </div>
+      <div class="form-group">
+        <label>Category</label>
+        <select id="admCat">
+          <option value="Shoes">Shoes</option>
+          <option value="Clothes">Clothes</option>
+          <option value="Electronics">Electronics</option>
+        </select>
+      </div>
+      <button class="submit-order-btn" style="background:#003366" onclick="saveProduct()">➕ Ongeramo Igicuruzwa</button>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="nav-bar">
+    <div class="nav-item active">🏠 <span>Home</span></div>
+    <div class="nav-item">🛍️ <span>Shop</span></div>
+    <div class="nav-item">🛒 <span>Cart</span></div>
+  </div>
+
+  <script>
+    // Firebase Setup
+    const firebaseConfig = {
+      databaseURL: "https://ob-shop-default-rtdb.firebaseio.com/"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // Initial Products
+    let products = JSON.parse(localStorage.getItem('ob_products')) || [
+      { id: 1, name: "Ikanzu", price: 15000, oldPrice: 0, cat: "Clothes", img: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300" },
+      { id: 2, name: "Ikweto", price: 12000, oldPrice: 10000, cat: "Shoes", img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300" },
+      { id: 3, name: "Smart Watch Series 8", price: 35000, oldPrice: 45000, cat: "Electronics", img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300" }
+    ];
+
+    let currentSelectedProduct = null;
+
+    function renderProducts(items) {
+      const grid = document.getElementById('productGrid');
+      grid.innerHTML = '';
+      items.forEach(p => {
+        grid.innerHTML += `
+          <div class="product-card">
+            <img src="${p.img}" class="product-img" alt="${p.name}" onerror="this.src='https://via.placeholder.com/150'">
+            <div>
+              <div class="badge-wrap">
+                <span class="badge badge-ob">OB</span>
+                <span class="badge badge-free">FREE</span>
+              </div>
+              <div class="product-title">${p.name}</div>
+              <div class="rating">★ 5.0 | 1 sold</div>
+              <div class="price-wrap">
+                <span class="price">${p.price.toLocaleString()} RWF</span>
+                ${p.oldPrice ? `<span class="old-price">${p.oldPrice.toLocaleString()} RWF</span>` : ''}
+              </div>
+            </div>
+            <button class="order-btn" onclick="openOrderModal(${p.id})">💬 Order</button>
+          </div>
+        `;
+      });
+    }
+
+    function openOrderModal(id) {
+      currentSelectedProduct = products.find(p => p.id === id);
+      if(!currentSelectedProduct) return;
+
+      document.getElementById('modalProdImg').src = currentSelectedProduct.img;
+      document.getElementById('modalProdName').innerText = currentSelectedProduct.name;
+      document.getElementById('modalProdPrice').innerText = currentSelectedProduct.price.toLocaleString() + " RWF";
+      
+      document.getElementById('orderModal').classList.add('active');
+    }
+
+    function closeOrderModal() {
+      document.getElementById('orderModal').classList.remove('active');
+    }
+
+    // AUTOMATIC SAVE ORDER TO CLOUD DATABASE & WHATSAPP
+    function sendWhatsAppOrder() {
+      const name = document.getElementById('custName').value.trim();
+      const phone = document.getElementById('custPhone').value.trim();
+      const loc = document.getElementById('custLoc').value.trim();
+
+      if (!name || !phone || !loc) {
+        alert("Mwihangane, uzuza amakuru yose (Izina, Nimero, n'Aho utuye)!");
+        return;
+      }
+
+      const orderData = {
+        customerName: name,
+        phone: phone,
+        location: loc,
+        productName: currentSelectedProduct.name,
+        price: currentSelectedProduct.price,
+        status: "Pending",
+        date: new Date().toLocaleString('rw-RW')
+      };
+
+      // 1. Automatic Save to Database
+      db.ref('orders').push(orderData);
+
+      // 2. Redirect to WhatsApp
+      const sellerPhone = "250780073151";
+      const message = `🛒 *ODA NSHYA - OB SHOP*\n\n` +
+                      `📦 *Igicuruzwa:* ${currentSelectedProduct.name}\n` +
+                      `💰 *Igiciro:* ${currentSelectedProduct.price.toLocaleString()} RWF\n\n` +
+                      `👤 *Izina:* ${name}\n` +
+                      `📞 *Phone:* ${phone}\n` +
+                      `📍 *Aho aherereye:* ${loc}\n\n` +
+                      `Mbereze Code ya MoMo Pay nishyure!`;
+
+      window.open(`https://wa.me/${sellerPhone}?text=${encodeURIComponent(message)}`, '_blank');
+      closeOrderModal();
+    }
+
+    // Triple Click Logo to Open Admin Dashboard
+    let logoClicks = 0;
+    document.getElementById('logoBtn').addEventListener('click', () => {
+      logoClicks++;
+      if (logoClicks === 3) {
+        logoClicks = 0;
+        const pass = prompt("Shyiramo Password ya Admin:");
+        if (pass === "obshop123") {
+          loadAdminReports();
+          document.getElementById('adminModal').classList.add('active');
+        } else {
+          alert("Password si yo!");
+        }
+      }
+      setTimeout(() => logoClicks = 0, 1000);
+    });
+
+    function closeAdminModal() {
+      document.getElementById('adminModal').classList.remove('active');
+    }
+
+    // Load Live Orders & Reports into Admin Panel
+    function loadAdminReports() {
+      db.ref('orders').on('value', snapshot => {
+        const data = snapshot.val();
+        const tbody = document.getElementById('ordersTableBody');
+        tbody.innerHTML = '';
+
+        if (!data) {
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Nta oda iraza...</td></tr>`;
+          document.getElementById('repTotalOrders').innerText = "0";
+          document.getElementById('repTotalRevenue').innerText = "0 RWF";
+          return;
         }
 
-        function switchLanguage() {
-            const lang = document.getElementById('langSelect').value;
-            localStorage.setItem('ob_lang', lang);
-            const t = dict[lang] || dict.rw;
+        let totalOrders = 0;
+        let totalRevenue = 0;
 
-            document.getElementById('searchInput').placeholder = t.search;
-            document.getElementById('btnCatAll').textContent = t.catAll;
-            document.getElementById('btnCatShoes').textContent = t.catShoes;
-            document.getElementById('btnCatFood').textContent = t.catFood;
-            document.getElementById('btnCatClothes').textContent = t.catClothes;
-            document.getElementById('btnCatElec').textContent = t.catElec;
-            document.getElementById('btnCatTools').textContent = t.catTools;
+        Object.keys(data).reverse().forEach(key => {
+          const o = data[key];
+          totalOrders++;
+          if (o.status === 'Paid' || o.status === 'Completed') {
+            totalRevenue += Number(o.price);
+          }
 
-            document.getElementById('txtHome').textContent = t.home;
-            document.getElementById('txtShop').textContent = t.shop;
-            document.getElementById('txtCart').textContent = t.cart;
+          const statusClass = o.status === 'Completed' ? 'status-completed' : 'status-pending';
 
-            document.getElementById('txtAdminTitle').textContent = t.adminTitle;
-            document.getElementById('txtBtnAdd').textContent = t.addBtn;
-            document.getElementById('txtManageTitle').textContent = t.manageTitle;
-            document.getElementById('txtBtnClose').textContent = t.closeBtn;
+          tbody.innerHTML += `
+            <tr>
+              <td>${o.date.split(',')[0]}</td>
+              <td><b>${o.customerName}</b><br><small>${o.phone}</small></td>
+              <td>${o.productName}<br><small>${o.price} RWF</small></td>
+              <td>${o.location}</td>
+              <td><span class="status-badge ${statusClass}" onclick="toggleStatus('${key}', '${o.status}')">${o.status}</span></td>
+            </tr>
+          `;
+        });
 
-            filterItems();
-        }
+        document.getElementById('repTotalOrders').innerText = totalOrders;
+        document.getElementById('repTotalRevenue').innerText = totalRevenue.toLocaleString() + " RWF";
+      });
+    }
 
-        function openCamera() { document.getElementById('cameraInput').click(); }
-        function onCameraUpload(e) {
-            if(e.target.files.length > 0) {
-                alert("Ifoto yafashwe neza! Urubuga ruri gushakisha...");
-                renderGrid(fetchData());
-            }
-        }
+    function toggleStatus(key, currentStatus) {
+      const nextStatus = currentStatus === 'Pending' ? 'Completed' : 'Pending';
+      db.ref('orders/' + key).update({ status: nextStatus });
+    }
 
-        function fetchData() {
-            const data = localStorage.getItem('ob_products');
-            return data ? JSON.parse(data) : [];
-        }
+    function saveProduct() {
+      const name = document.getElementById('admName').value;
+      const price = Number(document.getElementById('admPrice').value);
+      const oldPrice = Number(document.getElementById('admOldPrice').value);
+      const img = document.getElementById('admImg').value;
+      const cat = document.getElementById('admCat').value;
 
-        function renderGrid(list) {
-            const grid = document.getElementById('productGrid');
-            const lang = localStorage.getItem('ob_lang') || 'rw';
-            const t = dict[lang] || dict.rw;
-            grid.innerHTML = "";
+      if (!name || !price) { alert("Uzuza izina n'igiciro!"); return; }
 
-            if(list.length === 0) {
-                grid.innerHTML = `<div class="no-products"><i class="fa-solid fa-box-open" style="font-size:30px; margin-bottom:8px; color:#CCC;"></i><br>${t.noProds}</div>`;
-                return;
-            }
+      const newP = { id: Date.now(), name, price, oldPrice, img: img || 'https://via.placeholder.com/150', cat };
+      products.push(newP);
+      localStorage.setItem('ob_products', JSON.stringify(products));
+      renderProducts(products);
+      alert("Igicuruzwa cyongeweho neza!");
+    }
 
-            list.forEach(p => {
-                grid.innerHTML += `
-                    <div class="product-card">
-                        <div>
-                            <img src="${p.image}" alt="${p.name}">
-                            <div class="product-info">
-                                <div class="badge-container">
-                                    <span class="badge-verified">OB</span>
-                                    <span class="badge-shipping">Free</span>
-                                </div>
-                                <div class="product-title">${p.name}</div>
-                                <div class="rating-sold"><i class="fa-solid fa-star"></i> 5.0 | ${p.sold || '1'} sold</div>
-                                <div class="price-row">
-                                    <span class="current-price">${p.price}</span>
-                                    ${p.oldPrice ? `<span class="old-price">${p.oldPrice}</span>` : ''}
-                                </div>
-                            </div>
-                        </div>
-                        <div style="padding: 0 4px 6px;">
-                            <button class="order-btn" onclick="orderWA('${p.name}', '${p.price}')">
-                                <i class="fa-brands fa-whatsapp"></i> ${t.order}
-                            </button>
-                        </div>
-                    </div>
-                `;
-            });
-        }
+    // Theme Switcher
+    document.getElementById('themeBtn').addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+    });
 
-        function selectCat(cat, btn) {
-            activeCategory = cat;
-            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-            if(btn) btn.classList.add('active');
-            
-            const lang = localStorage.getItem('ob_lang') || 'rw';
-            const t = dict[lang] || dict.rw;
-            document.getElementById('secTitle').textContent = cat === 'all' ? t.titleAll : cat;
-            filterItems();
-        }
+    function filterCat(cat) {
+      if (cat === 'All') renderProducts(products);
+      else renderProducts(products.filter(p => p.cat === cat));
+    }
 
-        function filterItems() {
-            const q = document.getElementById('searchInput').value.toLowerCase();
-            let all = fetchData();
-            if(activeCategory !== 'all') all = all.filter(p => p.category === activeCategory);
-            if(q) all = all.filter(p => p.name.toLowerCase().includes(q));
-            renderGrid(all);
-        }
-
-        function orderWA(name, price) {
-            const text = `Mwaramutse! Nishimiye igicuruzwa cyenu muri OB Shop:\n- *${name}*\n- Igiciro: *${price}*\nNshaka kugitumiza!`;
-            window.open(`https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(text)}`, '_blank');
-        }
-
-        let clicks = 0;
-        function clickLogo() {
-            clicks++;
-            if(clicks === 3) {
-                const p = prompt("Password ya Admin:");
-                if(p === ADMIN_PWD) {
-                    showAdminList();
-                    document.getElementById('adminModal').style.display = 'flex';
-                } else if(p !== null) {
-                    alert("Password si yo!");
-                }
-                clicks = 0;
-            }
-            setTimeout(() => { clicks = 0; }, 1500);
-        }
-
-        function closeAdminModal() { document.getElementById('adminModal').style.display = 'none'; }
-
-        function saveNewProduct() {
-            const name = document.getElementById('pName').value;
-            const category = document.getElementById('pCat').value;
-            const price = document.getElementById('pPrice').value;
-            const oldPrice = document.getElementById('pOldPrice').value;
-            const image = document.getElementById('pImage').value;
-
-            if(!name || !price || !image) {
-                alert("Uzuza Izina, Igiciro n'Ifoto!");
-                return;
-            }
-
-            const items = fetchData();
-            items.unshift({ id: Date.now(), name, category, price, oldPrice, image, sold: "1" });
-            localStorage.setItem('ob_products', JSON.stringify(items));
-            
-            document.getElementById('pName').value = "";
-            document.getElementById('pPrice').value = "";
-            document.getElementById('pOldPrice').value = "";
-            document.getElementById('pImage').value = "";
-
-            filterItems();
-            showAdminList();
-            alert("Igicuruzwa cyongewe neza!");
-        }
-
-        function showAdminList() {
-            const box = document.getElementById('adminList');
-            const items = fetchData();
-            box.innerHTML = "";
-            if(items.length === 0) { box.innerHTML = "<div style='color:#888;'>Nta gicuruzwa kiriho.</div>"; return; }
-            items.forEach(p => {
-                box.innerHTML += `
-                    <div class="admin-item">
-                        <span><strong>${p.name.substring(0, 15)}...</strong> - ${p.price}</span>
-                        <button class="delete-btn" onclick="removeProduct(${p.id})">Siba</button>
-                    </div>
-                `;
-            });
-        }
-
-        function removeProduct(id) {
-            if(confirm("Uramya ko ushaka gusiba iki gicuruzwa?")) {
-                let items = fetchData().filter(p => p.id !== id);
-                localStorage.setItem('ob_products', JSON.stringify(items));
-                filterItems();
-                showAdminList();
-            }
-        }
-
-        function goNav(type) {
-            if(type === 'home' || type === 'shop') selectCat('all', document.getElementById('btnCatAll'));
-            if(type === 'cart') alert("Agaseke (Cart): Koresha akabuto ka WhatsApp 'Tumiza' kuri buri gicuruzwa!");
-        }
-
-        window.onload = function() {
-            if(localStorage.getItem('ob_dark') === 'true') switchTheme();
-            const lang = localStorage.getItem('ob_lang') || 'rw';
-            document.getElementById('langSelect').value = lang;
-            switchLanguage();
-        };
-    </script>
+    // Initialize
+    renderProducts(products);
+  </script>
 </body>
 </html>
