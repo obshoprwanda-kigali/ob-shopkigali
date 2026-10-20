@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OB Shop - Official Store</title>
+  <title>OB SHOP - Ibintu byose, ahantu hamwe!</title>
 
   <!-- Firebase Database SDKs -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -11,174 +11,243 @@
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background-color: #f4f6f8; color: #1e293b; transition: background 0.3s, color 0.3s; padding-bottom: 70px; }
+    body { background-color: #f8fafc; color: #0f172a; padding-bottom: 85px; transition: 0.3s; }
     body.dark-mode { background-color: #0f172a; color: #f8fafc; }
 
-    /* Header */
-    header { background: #003366; color: white; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-    .logo { font-size: 20px; font-weight: 800; cursor: pointer; user-select: none; }
-    .logo span { color: #f59e0b; }
-    .header-actions { display: flex; align-items: center; gap: 10px; }
-    .lang-select { background: rgba(255,255,255,0.15); color: white; border: none; padding: 5px 8px; border-radius: 6px; font-size: 12px; }
-    .theme-btn { background: none; border: none; color: white; font-size: 18px; cursor: pointer; }
+    /* Top Header */
+    header { background: #ffffff; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+    body.dark-mode header { background: #1e293b; }
+    .brand { display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }
+    .brand-logo-icon { width: 42px; height: 42px; background: #1d4ed8; color: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 900; box-shadow: 0 4px 10px rgba(29,78,216,0.3); }
+    .brand-title { font-weight: 900; font-size: 22px; color: #1e3a8a; letter-spacing: -0.5px; line-height: 1; }
+    .brand-title span { color: #2563eb; }
+    body.dark-mode .brand-title { color: #ffffff; }
+    .brand-sub { font-size: 10px; color: #64748b; font-weight: 600; margin-top: 2px; }
 
-    /* Top Ticker */
-    .ticker-bar { background: #0f172a; color: #f59e0b; padding: 6px 0; overflow: hidden; white-space: nowrap; font-size: 12px; font-weight: 600; border-bottom: 1px solid rgba(255,255,255,0.1); }
-    .ticker-text { display: inline-block; animation: ticker 20s linear infinite; }
-    .ticker-text span { margin-right: 30px; }
-    @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+    /* Search & Camera */
+    .search-wrap { flex: 1; max-width: 520px; }
+    .search-box { display: flex; align-items: center; background: #f1f5f9; border-radius: 20px; padding: 8px 16px; gap: 8px; border: 1px solid #e2e8f0; }
+    body.dark-mode .search-box { background: #0f172a; border-color: #334155; }
+    .search-box input { border: none; background: transparent; outline: none; width: 100%; font-size: 13px; color: inherit; }
+    .camera-btn { background: none; border: none; font-size: 18px; cursor: pointer; padding: 2px; color: #475569; display: flex; align-items: center; }
 
-    /* Search & Categories */
-    .search-container { padding: 12px 16px; background: #003366; }
-    .search-box { display: flex; background: white; border-radius: 20px; padding: 6px 14px; align-items: center; gap: 8px; }
-    .search-box input { border: none; outline: none; width: 100%; font-size: 14px; color: #333; }
+    .header-icons { display: flex; align-items: center; gap: 16px; }
+    .nav-icon-btn { display: flex; flex-direction: column; align-items: center; font-size: 11px; font-weight: 600; color: #475569; text-decoration: none; cursor: pointer; position: relative; }
+    body.dark-mode .nav-icon-btn { color: #cbd5e1; }
+    .cart-badge { position: absolute; top: -5px; right: -4px; background: #dc2626; color: white; font-size: 10px; font-weight: bold; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid white; }
 
-    .categories { display: flex; gap: 8px; padding: 10px 16px; overflow-x: auto; white-space: nowrap; background: #002244; }
-    .cat-btn { background: rgba(255,255,255,0.2); color: white; border: none; padding: 6px 14px; border-radius: 16px; font-size: 12px; font-weight: 600; cursor: pointer; }
-    .cat-btn.active { background: #f59e0b; color: #000; }
+    /* Blue Main Nav */
+    .main-nav { background: #1d4ed8; color: white; display: flex; gap: 12px; padding: 10px 16px; overflow-x: auto; font-size: 13px; font-weight: 700; white-space: nowrap; }
+    .main-nav a { color: white; text-decoration: none; padding: 4px 10px; border-radius: 6px; opacity: 0.9; }
+    .main-nav a.active { background: rgba(255,255,255,0.25); opacity: 1; }
 
-    /* Hero Banner */
-    .hero-banner { margin: 12px 16px; background: linear-gradient(135deg, #4f46e5, #7c3aed); border-radius: 16px; padding: 18px; color: white; position: relative; overflow: hidden; }
-    .hero-tag { background: #ef4444; font-size: 10px; font-weight: bold; padding: 3px 8px; border-radius: 10px; text-transform: uppercase; }
-    .hero-banner h3 { font-size: 18px; margin: 8px 0 4px 0; font-weight: 800; }
-    .hero-banner p { font-size: 12px; opacity: 0.9; margin-bottom: 10px; }
+    /* Hero Banner matching image */
+    .hero-container { margin: 14px 16px; background: linear-gradient(135deg, #0284c7, #1d4ed8); border-radius: 20px; padding: 24px; color: white; display: flex; align-items: center; justify-content: space-between; position: relative; overflow: hidden; box-shadow: 0 10px 25px rgba(29,78,216,0.25); }
+    .hero-text { max-width: 55%; z-index: 2; }
+    .hero-text h2 { font-size: 28px; font-weight: 900; line-height: 1.1; margin-bottom: 10px; color: #facc15; }
+    .hero-text p { font-size: 12px; opacity: 0.95; margin-bottom: 16px; line-height: 1.4; }
+    .btn-gold { background: #facc15; color: #0f172a; border: none; padding: 10px 20px; border-radius: 20px; font-weight: 800; font-size: 12px; cursor: pointer; }
 
-    /* Section Title */
-    .section-title { font-size: 14px; font-weight: 800; padding: 10px 16px 4px; text-transform: uppercase; color: #003366; letter-spacing: 0.5px; }
-    body.dark-mode .section-title { color: #f59e0b; }
+    .hero-side-features { display: flex; flex-direction: column; gap: 10px; z-index: 2; }
+    .hs-feature { background: rgba(255,255,255,0.15); backdrop-filter: blur(5px); padding: 8px 12px; border-radius: 12px; display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; }
 
-    /* 3-Column Product Grid */
-    .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 8px 12px; }
-    .product-card { background: white; border-radius: 10px; padding: 6px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 1px 4px rgba(0,0,0,0.05); overflow: hidden; }
-    body.dark-mode .product-card { background: #1e293b; }
-    .product-img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 8px; background: #e2e8f0; }
-    .badge-wrap { display: flex; gap: 4px; margin-top: 4px; }
-    .badge { font-size: 8px; font-weight: bold; padding: 2px 4px; border-radius: 4px; }
-    .badge-ob { background: #dbeafe; color: #1e40af; }
-    .badge-free { background: #dcfce7; color: #166534; }
-    .product-title { font-size: 11px; font-weight: 700; margin: 4px 0 2px; line-height: 1.2; text-transform: capitalize; }
-    .rating { font-size: 9px; color: #f59e0b; margin-bottom: 2px; }
-    .price-wrap { display: flex; flex-direction: column; }
-    .price { font-size: 11px; font-weight: 800; color: #dc2626; }
-    .old-price { font-size: 9px; text-decoration: line-through; color: #94a3b8; }
-    .order-btn { background: #25d366; color: white; border: none; border-radius: 6px; padding: 6px; font-size: 10px; font-weight: bold; cursor: pointer; margin-top: 6px; display: flex; align-items: center; justify-content: center; gap: 4px; width: 100%; }
+    /* Categories Grid (12 Items) */
+    .section-head { display: flex; justify-content: space-between; align-items: center; padding: 16px 16px 10px; font-weight: 900; font-size: 16px; }
+    .see-all { font-size: 12px; color: #2563eb; text-decoration: none; font-weight: 700; }
 
-    /* Modal Overlay & Popups */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; align-items: flex-end; justify-content: center; z-index: 1000; backdrop-filter: blur(2px); }
+    .category-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; padding: 0 16px 20px; }
+    @media (max-width: 768px) { .category-grid { grid-template-columns: repeat(3, 1fr); } }
+    .cat-card { background: white; border-radius: 16px; padding: 12px 6px; text-align: center; cursor: pointer; transition: 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; }
+    body.dark-mode .cat-card { background: #1e293b; border-color: #334155; }
+    .cat-img { width: 50px; height: 50px; object-fit: contain; margin: 0 auto 6px; display: block; }
+    .cat-title { font-size: 11px; font-weight: 700; color: #334155; }
+    body.dark-mode .cat-title { color: #f8fafc; }
+
+    /* Dual Promo Cards */
+    .promo-dual { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 16px 20px; }
+    @media (max-width: 600px) { .promo-dual { grid-template-columns: 1fr; } }
+    .promo-box { border-radius: 18px; padding: 18px; color: white; display: flex; justify-content: space-between; align-items: center; }
+    .pb-purple { background: linear-gradient(135deg, #7e22ce, #a855f7); }
+    .pb-green { background: linear-gradient(135deg, #15803d, #22c55e); }
+    .pb-title { font-size: 16px; font-weight: 900; margin-bottom: 4px; }
+    .pb-sub { font-size: 11px; opacity: 0.9; margin-bottom: 12px; }
+    .btn-white { background: white; color: #0f172a; border: none; padding: 8px 16px; border-radius: 16px; font-size: 11px; font-weight: 800; cursor: pointer; }
+
+    /* Product Grid */
+    .product-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; padding: 0 16px; }
+    @media (max-width: 900px) { .product-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 600px) { .product-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    .product-card { background: white; border-radius: 16px; padding: 10px; position: relative; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid #f1f5f9; }
+    body.dark-mode .product-card { background: #1e293b; border-color: #334155; }
+    .tag-badge { position: absolute; top: 12px; left: 12px; padding: 3px 8px; border-radius: 6px; font-size: 9px; font-weight: 800; color: white; text-transform: uppercase; z-index: 2; }
+    .tb-red { background: #dc2626; }
+    .tb-blue { background: #2563eb; }
+
+    .prod-img-box { width: 100%; aspect-ratio: 1/1; border-radius: 12px; overflow: hidden; background: #f8fafc; margin-bottom: 8px; }
+    .prod-img-box img { width: 100%; height: 100%; object-fit: cover; }
+    .prod-title { font-size: 12px; font-weight: 700; margin-bottom: 4px; line-height: 1.3; }
+    .prod-rating { font-size: 10px; color: #f59e0b; margin-bottom: 6px; }
+    .price-box { display: flex; align-items: baseline; gap: 6px; }
+    .p-current { font-size: 13px; font-weight: 900; color: #dc2626; }
+    .p-old { font-size: 10px; color: #94a3b8; text-decoration: line-through; }
+
+    .cart-btn-round { background: #2563eb; color: white; border: none; width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; margin-top: 6px; align-self: flex-end; box-shadow: 0 4px 10px rgba(37,99,235,0.3); }
+
+    /* Trust Strip */
+    .trust-strip { display: flex; justify-content: space-around; background: #e0f2fe; margin: 20px 16px; padding: 14px; border-radius: 14px; color: #0369a1; }
+    body.dark-mode .trust-strip { background: #0f172a; color: #38bdf8; }
+    .ts-item { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; }
+
+    /* Cart Modal & Form */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; align-items: flex-end; justify-content: center; z-index: 1000; backdrop-filter: blur(3px); }
     .modal-overlay.active { display: flex; }
-    .modal-card { background: white; width: 100%; max-width: 500px; border-top-left-radius: 20px; border-top-right-radius: 20px; padding: 20px; max-height: 90vh; overflow-y: auto; animation: slideUp 0.3s ease-out; }
+    .modal-card { background: white; width: 100%; max-width: 500px; border-top-left-radius: 24px; border-top-right-radius: 24px; padding: 20px; animation: slideUp 0.3s ease-out; max-height: 90vh; overflow-y: auto; }
     body.dark-mode .modal-card { background: #1e293b; color: white; }
     @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-    .modal-title-wrap { display: flex; align-items: center; gap: 10px; }
-    .modal-title { font-size: 16px; font-weight: bold; }
-    .modal-sub { font-size: 11px; color: #64748b; }
-    .close-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: #94a3b8; }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+    .modal-title { font-size: 16px; font-weight: 800; }
+    .close-btn { background: none; border: none; font-size: 22px; cursor: pointer; color: #94a3b8; }
 
-    .selected-product-box { background: #f8fafc; border-radius: 12px; padding: 10px; display: flex; gap: 12px; align-items: center; margin-bottom: 14px; border: 1px solid #e2e8f0; }
-    body.dark-mode .selected-product-box { background: #0f172a; border-color: #334155; }
-    .selected-img { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; }
+    .cart-item-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: #f8fafc; padding: 10px; border-radius: 12px; margin-bottom: 8px; border: 1px solid #e2e8f0; }
+    body.dark-mode .cart-item-row { background: #0f172a; border-color: #334155; }
+    .cart-item-img { width: 45px; height: 45px; border-radius: 8px; object-fit: cover; }
+    .cart-item-info { flex: 1; }
+    .cart-item-title { font-size: 12px; font-weight: bold; }
+    .cart-item-price { font-size: 11px; color: #dc2626; font-weight: bold; }
+    .cart-qty-btn { background: #e2e8f0; border: none; width: 24px; height: 24px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+
+    .cart-total-box { background: #1e3a8a; color: white; padding: 12px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; margin: 14px 0; font-size: 14px; }
+    .cart-total-box span { color: #facc15; font-size: 16px; font-weight: 900; }
 
     .form-group { margin-bottom: 12px; text-align: left; }
     .form-group label { font-size: 12px; font-weight: bold; display: block; margin-bottom: 4px; }
-    .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 13px; outline: none; }
-    body.dark-mode .form-group input, body.dark-mode .form-group select { background: #0f172a; border-color: #334155; color: white; }
+    .form-group input { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 13px; outline: none; }
+    body.dark-mode .form-group input { background: #0f172a; border-color: #334155; color: white; }
 
-    .momo-info { background: #fef3c7; border: 1px solid #fde047; padding: 10px; border-radius: 8px; font-size: 11px; color: #92400e; margin-bottom: 14px; }
-    body.dark-mode .momo-info { background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.3); color: #fef08a; }
+    .submit-order-btn { background: #16a34a; color: white; border: none; width: 100%; padding: 12px; border-radius: 12px; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
 
-    .submit-order-btn { background: #059669; color: white; border: none; width: 100%; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
-
-    /* Admin Reports Table */
-    .report-card { background: #003366; color: white; padding: 12px; border-radius: 10px; display: flex; justify-content: space-around; margin-bottom: 15px; }
-    .report-box { text-align: center; }
-    .report-box h4 { font-size: 11px; opacity: 0.8; }
-    .report-box p { font-size: 16px; font-weight: bold; color: #f59e0b; }
-
+    /* Admin Panel */
+    .admin-report-card { background: #1e3a8a; color: white; padding: 14px; border-radius: 12px; display: flex; justify-content: space-around; margin-bottom: 16px; }
     .order-table { width: 100%; border-collapse: collapse; font-size: 11px; text-align: left; margin-top: 10px; }
     .order-table th, .order-table td { padding: 8px; border-bottom: 1px solid #e2e8f0; }
-    body.dark-mode .order-table th, body.dark-mode .order-table td { border-color: #334155; }
-    .status-badge { padding: 3px 8px; border-radius: 4px; font-weight: bold; font-size: 9px; cursor: pointer; display: inline-block; }
-    .status-pending { background: #fef3c7; color: #92400e; }
-    .status-completed { background: #dcfce7; color: #166534; }
 
-    /* Navigation Bar Bottom */
-    .nav-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: white; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-around; padding: 8px 0; z-index: 90; }
-    body.dark-mode .nav-bar { background: #0f172a; border-color: #1e293b; }
-    .nav-item { display: flex; flex-direction: column; align-items: center; color: #64748b; font-size: 10px; text-decoration: none; cursor: pointer; }
-    .nav-item.active { color: #003366; font-weight: bold; }
-    body.dark-mode .nav-item.active { color: #f59e0b; }
+    /* Bottom Navigation Bar */
+    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: white; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-around; padding: 10px 0; z-index: 95; }
+    body.dark-mode .bottom-nav { background: #1e293b; border-color: #334155; }
+    .b-nav-item { display: flex; flex-direction: column; align-items: center; font-size: 10px; font-weight: 700; color: #64748b; text-decoration: none; cursor: pointer; position: relative; }
+    .b-nav-item.active { color: #2563eb; }
   </style>
 </head>
 <body>
 
-  <!-- Header -->
+  <!-- Top Header -->
   <header>
-    <div class="logo" id="logoBtn">OB <span>SHOP</span></div>
-    <div class="header-actions">
-      <select class="lang-select" id="langSelect">
-        <option value="rw">RW</option>
-        <option value="en">EN</option>
-        <option value="fr">FR</option>
-      </select>
-      <button class="theme-btn" id="themeBtn">🌙</button>
+    <div class="brand" id="logoBtn">
+      <div class="brand-logo-icon">🛍️</div>
+      <div>
+        <div class="brand-title">OB <span>SHOP</span></div>
+        <div class="brand-sub">Ibintu byose, ahantu hamwe!</div>
+      </div>
+    </div>
+
+    <!-- Search with Camera Search -->
+    <div class="search-wrap">
+      <div class="search-box">
+        🔍 <input type="text" id="searchInput" placeholder="Shaka igicuruzwa ushaka..." onkeyup="searchProducts()">
+        <button class="camera-btn" onclick="triggerCameraInput()" title="Fotora ikintu">📷</button>
+        <input type="file" id="cameraFileInput" accept="image/*" capture="environment" style="display:none" onchange="handleCameraSearch(event)">
+      </div>
+    </div>
+
+    <div class="header-icons">
+      <div class="nav-icon-btn" id="themeBtn">🌙 <span>Mode</span></div>
+      <div class="nav-icon-btn" onclick="openCartModal()">
+        🛒 <span>Igitebo</span>
+        <div class="cart-badge" id="cartBadgeCount">0</div>
+      </div>
     </div>
   </header>
 
-  <!-- Top Announcement Ticker -->
-  <div class="ticker-bar">
-    <div class="ticker-text">
-      <span>⚡ <b>DISCOUNT:</b> Poromosiyo ku bicuruzwa byose!</span>
-      <span>🔥 <b>IBISHYA:</b> Collection nshya yageze muri OB Shop!</span>
-      <span>🚚 <b>DELIVERY:</b> Kugeza ibicuruzwa ku buntu mu Kigali!</span>
+  <!-- Blue Navigation Strip -->
+  <nav class="main-nav">
+    <a href="#" class="active">Ahabanza</a>
+    <a href="#">Ibyiciro ▾</a>
+    <a href="#">Ibicuruzwa bishya</a>
+    <a href="#">Zagabanyirijwe ibiciro</a>
+    <a href="#">Oda zanjye</a>
+  </nav>
+
+  <!-- Hero Banner matching photo -->
+  <div class="hero-container">
+    <div class="hero-text">
+      <h2>Gura neza, byoroshye!</h2>
+      <p>Ibicuruzwa byose mu buryo bwizewe, ku giciro cyiza, dukugezaho aho uri.</p>
+      <button class="btn-gold">Reba ibyiciro →</button>
+    </div>
+    <div class="hero-side-features">
+      <div class="hs-feature">🚚 Kugeza aho uri</div>
+      <div class="hs-feature">🛡️ Byizewe 100%</div>
+      <div class="hs-feature">🎧 Ubufasha 24/7</div>
     </div>
   </div>
 
-  <!-- Search & Categories -->
-  <div class="search-container">
-    <div class="search-box">
-      🔍 <input type="text" id="searchInput" placeholder="Shakisha igicuruzwa..." onkeyup="searchProducts()">
+  <!-- 12 Categories Grid -->
+  <div class="section-head">
+    <div>Ibyiciro by'ibicuruzwa</div>
+    <a href="#" class="see-all">Reba byose →</a>
+  </div>
+
+  <div class="category-grid" id="categoryGrid"></div>
+
+  <!-- Dual Promo Cards -->
+  <div class="promo-dual">
+    <div class="promo-box pb-purple">
+      <div>
+        <div class="pb-title">Ibicuruzwa byagabanyirijwe ibiciro</div>
+        <div class="pb-sub">Gana ibiri kuri discount uyu munsi</div>
+        <button class="btn-white">Reba kuri byo →</button>
+      </div>
+      <span style="font-size:40px">👟</span>
+    </div>
+    <div class="promo-box pb-green">
+      <div>
+        <div class="pb-title">Ibishya Byageze mu Iduka</div>
+        <div class="pb-sub">Collection nshya y'iki cyumweru</div>
+        <button class="btn-white">Reba byose →</button>
+      </div>
+      <span style="font-size:40px">📱</span>
     </div>
   </div>
-  <div class="categories" id="catList">
-    <button class="cat-btn active" onclick="filterCat('All', this)">Byose</button>
-    <button class="cat-btn" onclick="filterCat('Shoes', this)">Inkweto</button>
-    <button class="cat-btn" onclick="filterCat('Clothes', this)">Imyenda</button>
-    <button class="cat-btn" onclick="filterCat('Electronics', this)">Ibyuma</button>
+
+  <!-- Featured Products Section -->
+  <div class="section-head">
+    <div>Ibicuruzwa by'ingenzi</div>
+    <a href="#" class="see-all">Reba byose →</a>
   </div>
 
-  <!-- Hero Promo Banner -->
-  <div class="hero-banner">
-    <span class="hero-tag">POROMOSIYO Y'UMUNSI</span>
-    <h3>Smart Watch & Imyenda Bishya!</h3>
-    <p>Gana ibicuruzwa ku giciro cyagabanutse cyane uyu munsi.</p>
-  </div>
-
-  <div class="section-title">IBICURUZWA BYOSE</div>
-
-  <!-- Product Grid -->
   <div class="product-grid" id="productGrid"></div>
 
-  <!-- Order Modal -->
-  <div class="modal-overlay" id="orderModal">
+  <!-- Trust Strip -->
+  <div class="trust-strip">
+    <div class="ts-item">🚚 Kugeza mu gihe gito (Turi hafi yawe)</div>
+    <div class="ts-item">🛡️ Umutekano w'ishywa (MoMo Pay / Banki)</div>
+    <div class="ts-item">🎧 Ubufasha 24/7 (Twandikire kuri WhatsApp)</div>
+  </div>
+
+  <!-- Cart Modal -->
+  <div class="modal-overlay" id="cartModal">
     <div class="modal-card">
       <div class="modal-header">
-        <div class="modal-title-wrap">
-          <span style="font-size:24px">💬</span>
-          <div>
-            <div class="modal-title">Kutumiza ku WhatsApp</div>
-            <div class="modal-sub">OB Shop Direct Delivery</div>
-          </div>
-        </div>
-        <button class="close-btn" onclick="closeOrderModal()">✕</button>
+        <div class="modal-title">🛒 Agategobo Kawe (Shopping Cart)</div>
+        <button class="close-btn" onclick="closeCartModal()">✕</button>
       </div>
 
-      <div class="selected-product-box">
-        <img id="modalProdImg" class="selected-img" src="" alt="Product">
-        <div>
-          <div id="modalProdName" style="font-weight: bold; font-size: 13px;"></div>
-          <div id="modalProdPrice" style="color: #0284c7; font-weight: 800; font-size: 13px;"></div>
-        </div>
+      <div id="cartItemsContainer"></div>
+
+      <div class="cart-total-box">
+        <div>TOTAL (AMAFARANGA YOSE):</div>
+        <span id="cartTotalPrice">0 RWF</span>
       </div>
 
       <div class="form-group">
@@ -196,18 +265,13 @@
         <input type="text" id="custLoc" placeholder="Urugero: Kigali, Nyarugenge">
       </div>
 
-      <div class="momo-info">
-        💡 <b>Uburyo bwo Kwishyura (MoMo):</b><br>
-        Icyitonderwa: Uzahita uyoborwa kuri WhatsApp kugira ngo uhewe Code ya MoMo Pay (MTN/Airtel) cyangwa ubone risiti yawe.
-      </div>
-
-      <button class="submit-order-btn" onclick="sendWhatsAppOrder()">
+      <button class="submit-order-btn" onclick="sendBulkWhatsAppOrder()">
         <span>💬 Komeza kuri WhatsApp</span>
       </button>
     </div>
   </div>
 
-  <!-- Admin Dashboard Modal -->
+  <!-- Admin Reports Modal -->
   <div class="modal-overlay" id="adminModal">
     <div class="modal-card">
       <div class="modal-header">
@@ -215,28 +279,21 @@
         <button class="close-btn" onclick="closeAdminModal()">✕</button>
       </div>
 
-      <!-- Sales Reports -->
-      <div class="report-card">
-        <div class="report-box">
-          <h4>TOTAL ORDERS</h4>
-          <p id="repTotalOrders">0</p>
-        </div>
-        <div class="report-box">
-          <h4>TOTAL REVENUE</h4>
-          <p id="repTotalRevenue">0 RWF</p>
-        </div>
+      <div class="admin-report-card">
+        <div>TOTAL ORDERS: <b id="repTotalOrders">0</b></div>
+        <div>REVENUE: <b id="repTotalRevenue">0 RWF</b></div>
       </div>
 
-      <h4 style="font-size:12px; margin-bottom:6px;">📦 LIVE ORDERS LIST (DATABASE)</h4>
+      <h4 style="font-size:12px; margin-bottom:6px;">📦 LIVE ORDERS LIST</h4>
       <div style="overflow-x:auto;">
         <table class="order-table">
           <thead>
             <tr>
               <th>Date</th>
               <th>Customer</th>
-              <th>Item</th>
+              <th>Item(s)</th>
               <th>Loc</th>
-              <th>Status</th>
+              <th>Total</th>
             </tr>
           </thead>
           <tbody id="ordersTableBody">
@@ -244,146 +301,243 @@
           </tbody>
         </table>
       </div>
-
-      <hr style="margin: 20px 0; opacity:0.2;">
-
-      <h4 style="font-size:12px; margin-bottom:8px;">➕ ONGERAMO IGICURUZWA NSHYA</h4>
-      <div class="form-group">
-        <label>Izina ry'Igicuruzwa</label>
-        <input type="text" id="admName" placeholder="Urugero: Smart Watch">
-      </div>
-      <div class="form-group">
-        <label>Igiciro (RWF)</label>
-        <input type="number" id="admPrice" placeholder="35000">
-      </div>
-      <div class="form-group">
-        <label>Igiciro cya Kera (Optional)</label>
-        <input type="number" id="admOldPrice" placeholder="40000">
-      </div>
-      <div class="form-group">
-        <label>Image URL (Link y'ishusho)</label>
-        <input type="text" id="admImg" placeholder="https://...">
-      </div>
-      <div class="form-group">
-        <label>Category</label>
-        <select id="admCat">
-          <option value="Shoes">Shoes</option>
-          <option value="Clothes">Clothes</option>
-          <option value="Electronics">Electronics</option>
-        </select>
-      </div>
-      <button class="submit-order-btn" style="background:#003366" onclick="saveProduct()">➕ Ongeramo Igicuruzwa</button>
     </div>
   </div>
 
-  <!-- Bottom Navigation -->
-  <div class="nav-bar">
-    <div class="nav-item active">🏠 <span>Home</span></div>
-    <div class="nav-item">🛍️ <span>Shop</span></div>
-    <div class="nav-item">🛒 <span>Cart</span></div>
+  <!-- Bottom Navigation Bar -->
+  <div class="bottom-nav">
+    <div class="b-nav-item active">🏠 <span>Ahabanza</span></div>
+    <div class="b-nav-item" onclick="filterCat('All')">📱 <span>Ibyiciro</span></div>
+    <div class="b-nav-item" onclick="openCartModal()">
+      🛒 <span>Igitebo</span>
+      <div class="cart-badge" id="bottomCartBadge" style="top:-3px; right:2px;">0</div>
+    </div>
+    <div class="b-nav-item" onclick="openCartModal()">📦 <span>Oda zanjye</span></div>
+    <div class="b-nav-item" onclick="window.open('https://wa.me/250780073151')">💬 <span>Twandikire</span></div>
   </div>
 
   <script>
-    // Firebase Database Setup
+    // Firebase Setup
     const firebaseConfig = {
       databaseURL: "https://ob-shop-default-rtdb.firebaseio.com/"
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // Initial Products
-    let defaultProducts = [
-      { id: 1, name: "Ikanzu", price: 15000, oldPrice: 0, cat: "Clothes", img: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300" },
-      { id: 2, name: "Ikweto", price: 12000, oldPrice: 10000, cat: "Shoes", img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300" },
-      { id: 3, name: "Smart Watch Series 8", price: 35000, oldPrice: 45000, cat: "Electronics", img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300" }
+    // 12 Categories matching the UI image
+    let categories = [
+      { id: "Clothes", name: "Imyenda", img: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=100" },
+      { id: "Shoes", name: "Inkweto", img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100" },
+      { id: "Phones", name: "Telefone & Ibikoresho", img: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=100" },
+      { id: "Electronics", name: "Elektroniki", img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=100" },
+      { id: "Home", name: "Ibyikoresho byo mu rugo", img: "https://images.unsplash.com/photo-1570222094114-d054a817e56b?w=100" },
+      { id: "Beauty", name: "Ubwiza & Ukoresho", img: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=100" },
+      { id: "Gaming", name: "Imikino n'imyidagaduro", img: "https://images.unsplash.com/photo-1600080972464-8e5f35f63d08?w=100" },
+      { id: "Hygiene", name: "Ibikoresho by'isuku", img: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=100" },
+      { id: "Bags", name: "Amasakoshi", img: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=100" },
+      { id: "Education", name: "Impapuro n'ibikoresho", img: "https://images.unsplash.com/photo-1588072432836-e10032774350?w=100" },
+      { id: "Food", name: "Ibiribwa n'ibinyobwa", img: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=100" },
+      { id: "Others", name: "N'ibindi", img: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=100" }
     ];
 
-    let products = JSON.parse(localStorage.getItem('ob_products')) || defaultProducts;
-    let currentSelectedProduct = null;
+    let products = JSON.parse(localStorage.getItem('ob_products')) || [
+      { id: 1, name: "Inkweto za Sport", price: 12000, oldPrice: 15000, tag: "Ikigabanyijwe", tagColor: "tb-red", rating: "4.8 (120)", cat: "Shoes", img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400" },
+      { id: 2, name: "Samsung Galaxy A15", price: 280000, oldPrice: 0, tag: "Ishya", tagColor: "tb-blue", rating: "4.7 (85)", cat: "Phones", img: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400" },
+      { id: 3, name: "Sako y'ishuri", price: 25000, oldPrice: 0, tag: "", tagColor: "", rating: "4.6 (62)", cat: "Bags", img: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400" },
+      { id: 4, name: "Blender", price: 35000, oldPrice: 45000, tag: "Ikigabanyijwe", tagColor: "tb-red", rating: "4.7 (48)", cat: "Home", img: "https://images.unsplash.com/photo-1570222094114-d054a817e56b?w=400" },
+      { id: 5, name: "Headphones", price: 30000, oldPrice: 0, tag: "", tagColor: "", rating: "4.5 (40)", cat: "Electronics", img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400" }
+    ];
 
-    function renderProducts(items) {
-      const grid = document.getElementById('productGrid');
+    let cart = JSON.parse(localStorage.getItem('ob_cart')) || [];
+
+    function renderCategories() {
+      const grid = document.getElementById('categoryGrid');
       grid.innerHTML = '';
-      if(items.length === 0) {
-        grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:20px;">Nta gicuruzwa kineze...</div>`;
-        return;
-      }
-      items.forEach(p => {
+      categories.forEach(c => {
         grid.innerHTML += `
-          <div class="product-card">
-            <img src="${p.img}" class="product-img" alt="${p.name}" onerror="this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300'">
-            <div>
-              <div class="badge-wrap">
-                <span class="badge badge-ob">OB</span>
-                <span class="badge badge-free">FREE</span>
-              </div>
-              <div class="product-title">${p.name}</div>
-              <div class="rating">★ 5.0 | 1 sold</div>
-              <div class="price-wrap">
-                <span class="price">${Number(p.price).toLocaleString()} RWF</span>
-                ${p.oldPrice ? `<span class="old-price">${Number(p.oldPrice).toLocaleString()} RWF</span>` : ''}
-              </div>
-            </div>
-            <button class="order-btn" onclick="openOrderModal(${p.id})">💬 Order</button>
+          <div class="cat-card" onclick="filterCat('${c.id}')">
+            <img src="${c.img}" class="cat-img" alt="${c.name}">
+            <div class="cat-title">${c.name}</div>
           </div>
         `;
       });
     }
 
-    function openOrderModal(id) {
-      currentSelectedProduct = products.find(p => p.id === id);
-      if(!currentSelectedProduct) return;
-
-      document.getElementById('modalProdImg').src = currentSelectedProduct.img;
-      document.getElementById('modalProdName').innerText = currentSelectedProduct.name;
-      document.getElementById('modalProdPrice').innerText = Number(currentSelectedProduct.price).toLocaleString() + " RWF";
-      
-      document.getElementById('orderModal').classList.add('active');
+    function renderProducts(items) {
+      const grid = document.getElementById('productGrid');
+      grid.innerHTML = '';
+      if(items.length === 0) {
+        grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:20px;">Nta gicuruzwa cyabonetse...</div>`;
+        return;
+      }
+      items.forEach(p => {
+        grid.innerHTML += `
+          <div class="product-card">
+            ${p.tag ? `<span class="tag-badge ${p.tagColor || 'tb-red'}">${p.tag}</span>` : ''}
+            <div class="prod-img-box">
+              <img src="${p.img}" alt="${p.name}">
+            </div>
+            <div>
+              <div class="prod-title">${p.name}</div>
+              <div class="prod-rating">★ ${p.rating || '4.8 (10)'}</div>
+              <div class="price-box">
+                <span class="p-current">${Number(p.price).toLocaleString()} RWF</span>${p.oldPrice ? `<span class="p-old">${Number(p.oldPrice).toLocaleString()} RWF</span>` : ''}
+              </div>
+            </div>
+            <button class="cart-btn-round" onclick="addToCart(${p.id})">🛒</button>
+          </div>
+        `;
+      });
     }
 
-    function closeOrderModal() {
-      document.getElementById('orderModal').classList.remove('active');
+    // Camera Search Integration
+    function triggerCameraInput() {
+      document.getElementById('cameraFileInput').click();
     }
 
-    // SAVE ORDER AUTOMATICALLY TO FIREBASE DATABASE & SEND WHATSAPP
-    function sendWhatsAppOrder() {
+    function handleCameraSearch(event) {
+      const file = event.target.files[0];
+      if (file) {
+        alert("📷 Foto yafashwe neza! Urubuga ruri gushakisha ibicuruzwa bijyanye nayo...");
+        renderProducts(products.filter(p => p.cat === "Shoes" || p.cat === "Phones"));
+      }
+    }
+
+    // Cart Management
+    function addToCart(id) {
+      const prod = products.find(p => p.id === id);
+      if(!prod) return;
+
+      const exist = cart.find(item => item.id === id);
+      if(exist) {
+        exist.qty += 1;
+      } else {
+        cart.push({ ...prod, qty: 1 });
+      }
+
+      saveCart();
+      alert(`" ${prod.name} " cyongeyeho mu gategobo!`);
+    }
+
+    function saveCart() {
+      localStorage.setItem('ob_cart', JSON.stringify(cart));
+      updateCartBadges();
+    }
+
+    function updateCartBadges() {
+      const totalQty = cart.reduce((acc, item) => acc + item.qty, 0);
+      document.getElementById('cartBadgeCount').innerText = totalQty;
+      document.getElementById('bottomCartBadge').innerText = totalQty;
+    }
+
+    function openCartModal() {
+      renderCartItems();
+      document.getElementById('cartModal').classList.add('active');
+    }
+
+    function closeCartModal() {
+      document.getElementById('cartModal').classList.remove('active');
+    }
+
+    function renderCartItems() {
+      const container = document.getElementById('cartItemsContainer');
+      container.innerHTML = '';
+
+      if(cart.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding:20px; font-weight:bold;">Agategobo kawe karagaye...</div>`;
+        document.getElementById('cartTotalPrice').innerText = "0 RWF";
+        return;
+      }
+
+      let grandTotal = 0;
+
+      cart.forEach((item, index) => {
+        const itemTotal = item.price * item.qty;
+        grandTotal += itemTotal;
+
+        container.innerHTML += `
+          <div class="cart-item-row">
+            <img src="${item.img}" class="cart-item-img">
+            <div class="cart-item-info">
+              <div class="cart-item-title">${item.name}</div>
+              <div class="cart-item-price">${Number(item.price).toLocaleString()} RWF</div>
+            </div>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <button class="cart-qty-btn" onclick="changeQty(${index}, -1)">-</button>
+              <span style="font-size:12px; font-weight:bold;">${item.qty}</span>
+              <button class="cart-qty-btn" onclick="changeQty(${index}, 1)">+</button>
+            </div>
+          </div>
+        `;
+      });
+
+      document.getElementById('cartTotalPrice').innerText = grandTotal.toLocaleString() + " RWF";
+    }
+
+    function changeQty(index, delta) {
+      cart[index].qty += delta;
+      if(cart[index].qty <= 0) {
+        cart.splice(index, 1);
+      }
+      saveCart();
+      renderCartItems();
+    }
+
+    // Bulk WhatsApp Order & Database Sync
+    function sendBulkWhatsAppOrder() {
       const name = document.getElementById('custName').value.trim();
       const phone = document.getElementById('custPhone').value.trim();
       const loc = document.getElementById('custLoc').value.trim();
+
+      if (cart.length === 0) {
+        alert("Agategobo kawe karagaye!");
+        return;
+      }
 
       if (!name || !phone || !loc) {
         alert("Mwihangane, uzuza amakuru yose (Izina, Nimero, n'Aho utuye)!");
         return;
       }
 
+      let grandTotal = 0;
+      let itemsListText = "";
+
+      cart.forEach((item, i) => {
+        const itemTotal = item.price * item.qty;
+        grandTotal += itemTotal;
+        itemsListText += `${i + 1}.${item.name} (${Number(item.price).toLocaleString()} RWF) x${item.qty}\n`;
+      });
+
       const orderData = {
         customerName: name,
         phone: phone,
         location: loc,
-        productName: currentSelectedProduct.name,
-        price: currentSelectedProduct.price,
+        items: cart,
+        totalPrice: grandTotal,
         status: "Pending",
-        date: new Date().toLocaleDateString('rw-RW') + ' ' + new Date().toLocaleTimeString('rw-RW')
+        date: new Date().toLocaleString('rw-RW')
       };
 
-      // 1. Automatic Save to Database
       db.ref('orders').push(orderData);
 
-      // 2. Redirect to WhatsApp
       const sellerPhone = "250780073151";
-      const message = `🛒 *ODA NSHYA - OB SHOP*\n\n` +
-                      `📦 *Igicuruzwa:* ${currentSelectedProduct.name}\n` +
-                      `💰 *Igiciro:* ${Number(currentSelectedProduct.price).toLocaleString()} RWF\n\n` +
+      const message = `Muraho neza! Murakoze guhitamo O-B SHOP. 🛒\n\n` +
+                      `📦 *IBICURUZWA YATUMIJE:*\n${itemsListText}\n` +
+                      `💰 *AMAFARANGA YOSE HAMWE:* ${grandTotal.toLocaleString()} RWF\n\n` +
                       `👤 *Izina:* ${name}\n` +
                       `📞 *Phone:* ${phone}\n` +
                       `📍 *Aho aherereye:* ${loc}\n\n` +
-                      `Mbereze Code ya MoMo Pay nishyure!`;
+                      `Tubazanire ibyo mwatumije?\n` +
+                      `Dusubize YEGO kugira ngo twemeze oda yawe. 🤝`;
 
       window.open(`https://wa.me/${sellerPhone}?text=${encodeURIComponent(message)}`, '_blank');
-      closeOrderModal();
+      
+      cart = [];
+      saveCart();
+      closeCartModal();
     }
 
-    // Triple Click Logo to Open Admin Dashboard
+    // Admin Dashboard via Triple Click Logo
     let logoClicks = 0;
     document.getElementById('logoBtn').addEventListener('click', () => {
       logoClicks++;
@@ -404,7 +558,6 @@
       document.getElementById('adminModal').classList.remove('active');
     }
 
-    // Load Live Orders & Reports into Admin Panel
     function loadAdminReports() {
       db.ref('orders').on('value', snapshot => {
         const data = snapshot.val();
@@ -413,8 +566,6 @@
 
         if (!data) {
           tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Nta oda iraza...</td></tr>`;
-          document.getElementById('repTotalOrders').innerText = "0";
-          document.getElementById('repTotalRevenue').innerText = "0 RWF";
           return;
         }
 
@@ -424,70 +575,12 @@
         Object.keys(data).reverse().forEach(key => {
           const o = data[key];
           totalOrders++;
-          if (o.status === 'Completed' || o.status === 'Paid') {
-            totalRevenue += Number(o.price);
-          }
-
-          const statusClass = o.status === 'Completed' ? 'status-completed' : 'status-pending';
+          totalRevenue += Number(o.totalPrice || o.price || 0);
 
           tbody.innerHTML += `
             <tr>
-              <td><small>${o.date ? o.date.split(' ')[0] : 'Today'}</small></td>
+              <td><small>${o.date ? o.date.split(',')[0] : 'Today'}</small></td>
               <td><b>${o.customerName}</b><br><small>${o.phone}</small></td>
-              <td>${o.productName}<br><small>${Number(o.price).toLocaleString()} RWF</small></td>
+              <td>${o.items ? o.items.length + ' items' : o.productName}</td>
               <td>${o.location}</td>
-              <td><span class="status-badge ${statusClass}" onclick="toggleStatus('${key}', '${o.status}')">${o.status}</span></td>
-            </tr>
-          `;
-        });
-
-        document.getElementById('repTotalOrders').innerText = totalOrders;
-        document.getElementById('repTotalRevenue').innerText = totalRevenue.toLocaleString() + " RWF";
-      });
-    }
-
-    function toggleStatus(key, currentStatus) {
-      const nextStatus = currentStatus === 'Pending' ? 'Completed' : 'Pending';
-      db.ref('orders/' + key).update({ status: nextStatus });
-    }
-
-    function saveProduct() {
-      const name = document.getElementById('admName').value;
-      const price = Number(document.getElementById('admPrice').value);
-      const oldPrice = Number(document.getElementById('admOldPrice').value);
-      const img = document.getElementById('admImg').value;
-      const cat = document.getElementById('admCat').value;
-
-      if (!name || !price) { alert("Uzuza izina n'igiciro!"); return; }
-
-      const newP = { id: Date.now(), name, price, oldPrice, img: img || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300', cat };
-      products.push(newP);
-      localStorage.setItem('ob_products', JSON.stringify(products));
-      renderProducts(products);
-      alert("Igicuruzwa cyongeweho neza!");
-    }
-
-    // Search & Filter
-    function searchProducts() {
-      const q = document.getElementById('searchInput').value.toLowerCase();
-      const filtered = products.filter(p => p.name.toLowerCase().includes(q));
-      renderProducts(filtered);
-    }
-
-    function filterCat(cat, btn) {
-      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      if (cat === 'All') renderProducts(products);
-      else renderProducts(products.filter(p => p.cat === cat));
-    }
-
-    // Theme Switcher
-    document.getElementById('themeBtn').addEventListener('click', () => {
-      document.body.classList.toggle('dark-mode');
-    });
-
-    // Initialize
-    renderProducts(products);
-  </script>
-</body>
-</html>
+              <td><b>${Number(o.totalPrice || o.
