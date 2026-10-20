@@ -19,7 +19,7 @@
             --border-color: #EAEAEA;
         }
 
-        /* Dark Mode Theme Variables */
+        /* Dark Mode Theme */
         body.dark-mode {
             --bg-light: #121212;
             --card-bg: #1E1E1E;
@@ -28,148 +28,126 @@
             --border-color: #333333;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; transition: background-color 0.3s, color 0.3s; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; transition: background-color 0.2s, color 0.2s; }
         body { background-color: var(--bg-light); color: var(--text-dark); padding-bottom: 75px; }
 
-        /* Brand Top Header */
+        /* Header */
         header { background: var(--primary); color: white; padding: 10px 12px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
         .logo { font-size: 20px; font-weight: 800; color: #fff; cursor: pointer; user-select: none; letter-spacing: 0.5px; }
         .logo span { color: var(--accent); }
         
-        /* Top Utility Controls (Language & Dark Mode Toggle) */
         .header-actions { display: flex; align-items: center; gap: 8px; }
-        
-        .lang-select { background: rgba(255,255,255,0.2); color: white; border: none; padding: 3px 6px; border-radius: 4px; font-size: 11px; outline: none; cursor: pointer; font-weight: 600; }
+        .lang-select { background: rgba(255,255,255,0.2); color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; outline: none; cursor: pointer; font-weight: 700; }
         .lang-select option { color: #000; background: #fff; }
+        .theme-toggle-btn { background: rgba(255,255,255,0.2); color: var(--accent); border: none; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; }
 
-        .theme-toggle-btn { background: rgba(255,255,255,0.2); color: var(--accent); border: none; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; }
-
-        /* Advanced Search Box with Camera Support */
+        /* Search Box & Camera */
         .search-box { display: flex; background: #fff; border-radius: 25px; padding: 5px 12px; align-items: center; justify-content: space-between; }
         .search-box-left { display: flex; align-items: center; gap: 6px; flex: 1; }
         .search-box input { border: none; outline: none; width: 100%; padding: 4px 0; font-size: 13px; color: #1A1A1A; }
         .search-box i { color: #707070; font-size: 14px; }
         .camera-btn { cursor: pointer; color: var(--primary); font-size: 15px; padding: 2px 4px; border-left: 1px solid #DDD; margin-left: 4px; }
 
-        /* Dynamic Shop Category Menu Bar */
+        /* Categories Bar */
         .categories-bar { display: flex; gap: 6px; overflow-x: auto; padding-top: 8px; padding-bottom: 4px; scrollbar-width: none; }
         .categories-bar::-webkit-scrollbar { display: none; }
-        .cat-btn { background: rgba(255,255,255,0.15); color: white; border: none; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; white-space: nowrap; cursor: pointer; transition: all 0.2s; }
-        .cat-btn.active { background: var(--accent); color: #000; font-weight: 800; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+        .cat-btn { background: rgba(255,255,255,0.15); color: white; border: none; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; white-space: nowrap; cursor: pointer; }
+        .cat-btn.active { background: var(--accent); color: #000; font-weight: 800; }
 
-        /* Product Grid Section (3-Column Layout) */
+        /* Section & Product Grid (3-Column Layout) */
         .section-header { padding: 10px 12px 6px; display: flex; justify-content: space-between; align-items: center; }
         .section-title { font-size: 14px; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; }
         body.dark-mode .section-title { color: var(--accent); }
 
         .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 0 6px; }
-        
-        .product-card { background: var(--card-bg); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; position: relative; border: 1px solid var(--border-color); box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
-        .product-card img { width: 100%; height: 110px; object-fit: cover; }
-        
+        .product-card { background: var(--card-bg); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid var(--border-color); box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+        .product-card img { width: 100%; height: 105px; object-fit: cover; }
         .product-info { padding: 6px; }
         .badge-container { display: flex; gap: 2px; flex-wrap: wrap; margin-bottom: 4px; }
         .badge-verified { background: #E3F2FD; color: #0D47A1; font-size: 8px; font-weight: 700; padding: 1px 4px; border-radius: 3px; text-transform: uppercase; }
         .badge-shipping { background: #E8F5E9; color: #1B5E20; font-size: 8px; font-weight: 700; padding: 1px 4px; border-radius: 3px; text-transform: uppercase; }
-        
         .product-title { font-size: 11px; font-weight: 600; line-height: 1.2; color: var(--text-dark); margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 26px; }
-        
         .rating-sold { font-size: 9px; color: var(--text-muted); margin-bottom: 4px; display: flex; align-items: center; gap: 2px; }
         .rating-sold i { color: var(--accent); font-size: 8px; }
-        
         .price-row { display: flex; flex-direction: column; align-items: flex-start; margin-top: 2px; }
         .current-price { color: var(--danger); font-size: 12px; font-weight: 800; }
         .old-price { color: var(--text-muted); font-size: 9px; text-decoration: line-through; }
-        
         .order-btn { width: 100%; background: var(--success); color: white; border: none; padding: 6px 2px; font-weight: 700; font-size: 10px; border-radius: 4px; margin-top: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 3px; }
 
-        /* Bottom Navigation Bar */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card-bg); display: flex; justify-content: space-around; padding: 8px 0; border-top: 1px solid var(--border-color); z-index: 100; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
+        /* Bottom Nav */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card-bg); display: flex; justify-content: space-around; padding: 8px 0; border-top: 1px solid var(--border-color); z-index: 100; }
         .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); text-decoration: none; font-size: 10px; font-weight: 500; cursor: pointer; }
         .nav-item.active { color: var(--primary); font-weight: 700; }
         body.dark-mode .nav-item.active { color: var(--accent); }
         .nav-item i { font-size: 16px; margin-bottom: 2px; }
 
-        /* Secret Admin Modal */
+        /* Admin Modal */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center; }
-        .modal-content { background: var(--card-bg); color: var(--text-dark); padding: 20px; border-radius: 12px; width: 90%; max-width: 400px; max-height: 85vh; overflow-y: auto; box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
+        .modal-content { background: var(--card-bg); color: var(--text-dark); padding: 20px; border-radius: 12px; width: 90%; max-width: 400px; max-height: 85vh; overflow-y: auto; }
         .modal-content h3 { margin-bottom: 12px; color: var(--primary); font-size: 16px; }
         body.dark-mode .modal-content h3 { color: var(--accent); }
-        .modal-content input, .modal-content select, .modal-content textarea { width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid var(--border-color); background: var(--bg-light); color: var(--text-dark); border-radius: 6px; font-size: 13px; }
+        .modal-content input, .modal-content select { width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid var(--border-color); background: var(--bg-light); color: var(--text-dark); border-radius: 6px; font-size: 13px; }
         .modal-content button { width: 100%; padding: 10px; background: var(--primary); color: white; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; }
-        .delete-item-btn { background: var(--danger) !important; padding: 4px 8px !important; font-size: 10px !important; width: auto !important; margin-left: auto; }
-        .admin-item-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border-color); font-size: 12px; }
+        .delete-btn { background: var(--danger) !important; padding: 4px 8px !important; font-size: 10px !important; width: auto !important; }
+        .admin-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border-color); font-size: 12px; }
         .no-products { text-align: center; padding: 40px 10px; color: var(--text-muted); font-size: 13px; grid-column: span 3; }
     </style>
 </head>
 <body>
 
-    <!-- Header Section -->
     <header>
         <div class="header-top">
-            <!-- Hidden Admin Access: Triple Click on Logo -->
-            <div class="logo" id="logoBtn">OB <span>SHOP</span></div>
-            
-            <!-- Language Switcher & Dark Mode Actions -->
+            <div class="logo" onclick="clickLogo()">OB <span>SHOP</span></div>
             <div class="header-actions">
-                <select class="lang-select" id="langSelect" onchange="changeLanguage()">
+                <select class="lang-select" id="langSelect" onchange="switchLanguage()">
                     <option value="rw">RW</option>
                     <option value="en">EN</option>
                     <option value="fr">FR</option>
                 </select>
-                <button class="theme-toggle-btn" onclick="toggleDarkMode()" id="themeBtn" title="Mode Dark/Light">
+                <button class="theme-toggle-btn" id="themeBtn" onclick="switchTheme()">
                     <i class="fa-solid fa-moon"></i>
                 </button>
             </div>
         </div>
         
-        <!-- Search Bar with Camera Visual Search -->
         <div class="search-box">
             <div class="search-box-left">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="Shakisha igicuruzwa...">
+                <input type="text" id="searchInput" onkeyup="filterItems()" placeholder="Shakisha igicuruzwa...">
             </div>
-            <!-- Camera Search Button -->
-            <div class="camera-btn" onclick="triggerCameraSearch()" title="Shakisha ukoresheje Kamera">
-                <i class="fa-solid fa-camera"></i>
-            </div>
-            <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display: none;" onchange="handleCameraImage(event)">
+            <div class="camera-btn" onclick="openCamera()"><i class="fa-solid fa-camera"></i></div>
+            <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none;" onchange="onCameraUpload(event)">
         </div>
 
-        <!-- Dynamic Shop Category Menu Bar -->
-        <div class="categories-bar" id="categoryBar">
-            <button class="cat-btn active" id="catAll" onclick="filterCategory('all', this)">Byose</button>
-            <button class="cat-btn" id="catShoes" onclick="filterCategory('Inkweto', this)">Inkweto</button>
-            <button class="cat-btn" id="catFood" onclick="filterCategory('Ibyo Kurya', this)">Ibyo Kurya</button>
-            <button class="cat-btn" id="catClothes" onclick="filterCategory('Imyenda', this)">Imyenda</button>
-            <button class="cat-btn" id="catElec" onclick="filterCategory('Electronics', this)">Electronics</button>
-            <button class="cat-btn" id="catTools" onclick="filterCategory('Ibikoresho', this)">Ibikoresho</button>
+        <div class="categories-bar">
+            <button class="cat-btn active" id="btnCatAll" onclick="selectCat('all', this)">Byose</button>
+            <button class="cat-btn" id="btnCatShoes" onclick="selectCat('Inkweto', this)">Inkweto</button>
+            <button class="cat-btn" id="btnCatFood" onclick="selectCat('Ibyo Kurya', this)">Ibyo Kurya</button>
+            <button class="cat-btn" id="btnCatClothes" onclick="selectCat('Imyenda', this)">Imyenda</button>
+            <button class="cat-btn" id="btnCatElec" onclick="selectCat('Electronics', this)">Electronics</button>
+            <button class="cat-btn" id="btnCatTools" onclick="selectCat('Ibikoresho', this)">Ibikoresho</button>
         </div>
     </header>
 
     <div class="section-header">
-        <div class="section-title" id="sectionTitle">Ibicuruzwa Byose</div>
+        <div class="section-title" id="secTitle">Ibicuruzwa Byose</div>
     </div>
 
-    <!-- 3-Column Product Grid -->
-    <div class="product-grid" id="productGrid">
-        <!-- Products load dynamically -->
-    </div>
+    <div class="product-grid" id="productGrid"></div>
 
-    <!-- Bottom Navigation Bar -->
     <nav class="bottom-nav">
-        <a onclick="showSection('all')" class="nav-item active" id="navHome"><i class="fa-solid fa-house"></i><span id="lblHome">Home</span></a>
-        <a onclick="focusShopCategories()" class="nav-item" id="navShop"><i class="fa-solid fa-store"></i><span id="lblShop">Shop</span></a>
-        <a onclick="showCartInfo()" class="nav-item"><i class="fa-solid fa-cart-shopping"></i><span id="lblCart">Cart</span></a>
+        <a onclick="goNav('home')" class="nav-item active" id="navHome"><i class="fa-solid fa-house"></i><span id="txtHome">Home</span></a>
+        <a onclick="goNav('shop')" class="nav-item" id="navShop"><i class="fa-solid fa-store"></i><span id="txtShop">Shop</span></a>
+        <a onclick="goNav('cart')" class="nav-item"><i class="fa-solid fa-cart-shopping"></i><span id="txtCart">Cart</span></a>
     </nav>
 
-    <!-- Hidden Admin Dashboard Modal -->
+    <!-- Admin Panel Modal -->
     <div class="modal" id="adminModal">
         <div class="modal-content">
-            <h3 id="lblAdminTitle">OB Shop - Ubuyobozi</h3>
+            <h3 id="txtAdminTitle">OB Shop - Ubuyobozi</h3>
             <input type="text" id="pName" placeholder="Izina ry'igicuruzwa">
-            <select id="pCategory">
+            <select id="pCat">
                 <option value="Inkweto">Inkweto</option>
                 <option value="Ibyo Kurya">Ibyo Kurya</option>
                 <option value="Imyenda">Imyenda</option>
@@ -177,150 +155,104 @@
                 <option value="Ibikoresho">Ibikoresho</option>
             </select>
             <input type="text" id="pPrice" placeholder="Igiciro (ex: 15,000 RWF)">
-            <input type="text" id="pOldPrice" placeholder="Igiciro cya kera (ex: 20,000 RWF)">
+            <input type="text" id="pOldPrice" placeholder="Igiciro cya kera">
             <input type="text" id="pImage" placeholder="Link y'ifoto (URL)">
-            <button onclick="addNewProduct()" id="btnAddProduct">Ongeramo Igicuruzwa</button>
-            
-            <hr style="margin: 15px 0;">
-            <h4 style="font-size: 13px; margin-bottom: 8px; color: var(--primary);" id="lblManageTitle">Cunga Ibicuruzwa Biraho:</h4>
-            <div id="adminProductList"></div>
+            <button onclick="saveNewProduct()" id="txtBtnAdd">Ongeramo Igicuruzwa</button>
 
-            <button onclick="closeAdminModal()" style="background: #707070; margin-top: 12px;" id="btnCloseAdmin">Bifunge</button>
+            <hr style="margin:12px 0;">
+            <h4 style="font-size:12px; margin-bottom:6px;" id="txtManageTitle">Cunga Ibicuruzwa:</h4>
+            <div id="adminList"></div>
+
+            <button onclick="closeAdminModal()" style="background:#707070; margin-top:10px;" id="txtBtnClose">Bifunge</button>
         </div>
     </div>
 
     <script>
-        const WHATSAPP_NUMBER = "250782393143";
-        const ADMIN_PASS = "obshop123";
-        let currentCategory = "all";
+        const WHATSAPP_NUM = "250782393143";
+        const ADMIN_PWD = "obshop123";
+        let activeCategory = "all";
 
-        // Dictionary Translation Data
-        const translations = {
+        const dict = {
             rw: {
                 search: "Shakisha igicuruzwa...",
-                catAll: "Byose",
-                catShoes: "Inkweto",
-                catFood: "Ibyo Kurya",
-                catClothes: "Imyenda",
-                catElec: "Electronics",
-                catTools: "Ibikoresho",
-                titleAll: "Ibicuruzwa Byose",
-                order: "Tumiza",
-                home: "Home",
-                shop: "Shop",
-                cart: "Cart",
+                catAll: "Byose", catShoes: "Inkweto", catFood: "Ibyo Kurya", catClothes: "Imyenda", catElec: "Electronics", catTools: "Ibikoresho",
+                titleAll: "Ibicuruzwa Byose", order: "Tumiza", home: "Home", shop: "Shop", cart: "Cart",
                 noProds: "Nta gicuruzwa kiri mu nsi y'iki cyiciro.",
-                adminTitle: "OB Shop - Ubuyobozi",
-                addBtn: "Ongeramo Igicuruzwa",
-                manageTitle: "Cunga Ibicuruzwa Biraho:",
-                closeBtn: "Bifunge"
+                adminTitle: "OB Shop - Ubuyobozi", addBtn: "Ongeramo Igicuruzwa", manageTitle: "Cunga Ibicuruzwa:", closeBtn: "Bifunge"
             },
             en: {
                 search: "Search product...",
-                catAll: "All",
-                catShoes: "Shoes",
-                catFood: "Food",
-                catClothes: "Clothes",
-                catElec: "Electronics",
-                catTools: "Accessories",
-                titleAll: "All Products",
-                order: "Order",
-                home: "Home",
-                shop: "Shop",
-                cart: "Cart",
+                catAll: "All", catShoes: "Shoes", catFood: "Food", catClothes: "Clothes", catElec: "Electronics", catTools: "Accessories",
+                titleAll: "All Products", order: "Order", home: "Home", shop: "Shop", cart: "Cart",
                 noProds: "No products in this category.",
-                adminTitle: "OB Shop - Management",
-                addBtn: "Add Product",
-                manageTitle: "Manage Existing Products:",
-                closeBtn: "Close"
+                adminTitle: "OB Shop - Management", addBtn: "Add Product", manageTitle: "Manage Products:", closeBtn: "Close"
             },
             fr: {
                 search: "Rechercher un produit...",
-                catAll: "Tous",
-                catShoes: "Chaussures",
-                catFood: "Nourriture",
-                catClothes: "Vêtements",
-                catElec: "Électronique",
-                catTools: "Accessoires",
-                titleAll: "Tous les Produits",
-                order: "Commander",
-                home: "Accueil",
-                shop: "Boutique",
-                cart: "Panier",
+                catAll: "Tous", catShoes: "Chaussures", catFood: "Nourriture", catClothes: "Vêtements", catElec: "Électronique", catTools: "Accessoires",
+                titleAll: "Tous les Produits", order: "Commander", home: "Accueil", shop: "Boutique", cart: "Panier",
                 noProds: "Aucun produit dans cette catégorie.",
-                adminTitle: "OB Shop - Administration",
-                addBtn: "Ajouter Produit",
-                manageTitle: "Gérer Produits Existants:",
-                closeBtn: "Fermer"
+                adminTitle: "OB Shop - Administration", addBtn: "Ajouter Produit", manageTitle: "Gérer Produits:", closeBtn: "Fermer"
             }
         };
 
-        // Dark Mode Functionality
-        function toggleDarkMode() {
+        function switchTheme() {
             document.body.classList.toggle('dark-mode');
             const isDark = document.body.classList.contains('dark-mode');
-            localStorage.setItem('ob_dark_mode', isDark);
-            
-            const btn = document.getElementById('themeBtn');
-            btn.innerHTML = isDark ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+            localStorage.setItem('ob_dark', isDark);
+            document.getElementById('themeBtn').innerHTML = isDark ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
         }
 
-        // Language Switcher Functionality
-        function changeLanguage() {
+        function switchLanguage() {
             const lang = document.getElementById('langSelect').value;
             localStorage.setItem('ob_lang', lang);
-            const t = translations[lang];
+            const t = dict[lang] || dict.rw;
 
             document.getElementById('searchInput').placeholder = t.search;
-            document.getElementById('catAll').textContent = t.catAll;
-            document.getElementById('catShoes').textContent = t.catShoes;
-            document.getElementById('catFood').textContent = t.catFood;
-            document.getElementById('catClothes').textContent = t.catClothes;
-            document.getElementById('catElec').textContent = t.catElec;
-            document.getElementById('catTools').textContent = t.catTools;
+            document.getElementById('btnCatAll').textContent = t.catAll;
+            document.getElementById('btnCatShoes').textContent = t.catShoes;
+            document.getElementById('btnCatFood').textContent = t.catFood;
+            document.getElementById('btnCatClothes').textContent = t.catClothes;
+            document.getElementById('btnCatElec').textContent = t.catElec;
+            document.getElementById('btnCatTools').textContent = t.catTools;
 
-            document.getElementById('lblHome').textContent = t.home;
-            document.getElementById('lblShop').textContent = t.shop;
-            document.getElementById('lblCart').textContent = t.cart;
+            document.getElementById('txtHome').textContent = t.home;
+            document.getElementById('txtShop').textContent = t.shop;
+            document.getElementById('txtCart').textContent = t.cart;
 
-            document.getElementById('lblAdminTitle').textContent = t.adminTitle;
-            document.getElementById('btnAddProduct').textContent = t.addBtn;
-            document.getElementById('lblManageTitle').textContent = t.manageTitle;
-            document.getElementById('btnCloseAdmin').textContent = t.closeBtn;
+            document.getElementById('txtAdminTitle').textContent = t.adminTitle;
+            document.getElementById('txtBtnAdd').textContent = t.addBtn;
+            document.getElementById('txtManageTitle').textContent = t.manageTitle;
+            document.getElementById('txtBtnClose').textContent = t.closeBtn;
 
-            filterProducts();
+            filterItems();
         }
 
-        // Camera Visual Search
-        function triggerCameraSearch() {
-            document.getElementById('cameraInput').click();
-        }
-
-        function handleCameraImage(event) {
-            const file = event.target.files[0];
-            if (file) {
-                alert("Ifoto yafashwe neza! Urubuga ruri gushakisha ibicuruzwa bifite isano...");
-                renderProducts(getProducts());
+        function openCamera() { document.getElementById('cameraInput').click(); }
+        function onCameraUpload(e) {
+            if(e.target.files.length > 0) {
+                alert("Ifoto yafashwe neza! Urubuga ruri gushakisha...");
+                renderGrid(fetchData());
             }
         }
 
-        function getProducts() {
-            const saved = localStorage.getItem('ob_products');
-            return saved ? JSON.parse(saved) : [];
+        function fetchData() {
+            const data = localStorage.getItem('ob_products');
+            return data ? JSON.parse(data) : [];
         }
 
-        function renderProducts(items) {
+        function renderGrid(list) {
             const grid = document.getElementById('productGrid');
             const lang = localStorage.getItem('ob_lang') || 'rw';
-            const t = translations[lang];
+            const t = dict[lang] || dict.rw;
             grid.innerHTML = "";
-            
-            if(items.length === 0) {
-                grid.innerHTML = `<div class="no-products"><i class="fa-solid fa-box-open" style="font-size: 30px; margin-bottom: 8px; color: #CCC;"></i><br>${t.noProds}</div>`;
+
+            if(list.length === 0) {
+                grid.innerHTML = `<div class="no-products"><i class="fa-solid fa-box-open" style="font-size:30px; margin-bottom:8px; color:#CCC;"></i><br>${t.noProds}</div>`;
                 return;
             }
 
-            items.forEach(p => {
+            list.forEach(p => {
                 grid.innerHTML += `
                     <div class="product-card">
                         <div>
@@ -331,9 +263,7 @@
                                     <span class="badge-shipping">Free</span>
                                 </div>
                                 <div class="product-title">${p.name}</div>
-                                <div class="rating-sold">
-                                    <i class="fa-solid fa-star"></i> 5.0 | ${p.sold || '1'} sold
-                                </div>
+                                <div class="rating-sold"><i class="fa-solid fa-star"></i> 5.0 | ${p.sold || '1'} sold</div>
                                 <div class="price-row">
                                     <span class="current-price">${p.price}</span>
                                     ${p.oldPrice ? `<span class="old-price">${p.oldPrice}</span>` : ''}
@@ -341,7 +271,7 @@
                             </div>
                         </div>
                         <div style="padding: 0 4px 6px;">
-                            <button class="order-btn" onclick="orderWhatsApp('${p.name}', '${p.price}')">
+                            <button class="order-btn" onclick="orderWA('${p.name}', '${p.price}')">
                                 <i class="fa-brands fa-whatsapp"></i> ${t.order}
                             </button>
                         </div>
@@ -350,16 +280,109 @@
             });
         }
 
-        function filterCategory(cat, btn) {
-            currentCategory = cat;
+        function selectCat(cat, btn) {
+            activeCategory = cat;
             document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
             if(btn) btn.classList.add('active');
             
             const lang = localStorage.getItem('ob_lang') || 'rw';
-            document.getElementById('sectionTitle').textContent = cat === 'all' ? translations[lang].titleAll : cat;
-            filterProducts();
+            const t = dict[lang] || dict.rw;
+            document.getElementById('secTitle').textContent = cat === 'all' ? t.titleAll : cat;
+            filterItems();
         }
 
-        function focusShopCategories() {
-            document.getElementById('categoryBar').scrollIntoView({ behavior: 'smooth' });
-            document.querySelectorAll('.nav-item').forEach(n => n.class
+        function filterItems() {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            let all = fetchData();
+            if(activeCategory !== 'all') all = all.filter(p => p.category === activeCategory);
+            if(q) all = all.filter(p => p.name.toLowerCase().includes(q));
+            renderGrid(all);
+        }
+
+        function orderWA(name, price) {
+            const text = `Mwaramutse! Nishimiye igicuruzwa cyenu muri OB Shop:\n- *${name}*\n- Igiciro: *${price}*\nNshaka kugitumiza!`;
+            window.open(`https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        let clicks = 0;
+        function clickLogo() {
+            clicks++;
+            if(clicks === 3) {
+                const p = prompt("Password ya Admin:");
+                if(p === ADMIN_PWD) {
+                    showAdminList();
+                    document.getElementById('adminModal').style.display = 'flex';
+                } else if(p !== null) {
+                    alert("Password si yo!");
+                }
+                clicks = 0;
+            }
+            setTimeout(() => { clicks = 0; }, 1500);
+        }
+
+        function closeAdminModal() { document.getElementById('adminModal').style.display = 'none'; }
+
+        function saveNewProduct() {
+            const name = document.getElementById('pName').value;
+            const category = document.getElementById('pCat').value;
+            const price = document.getElementById('pPrice').value;
+            const oldPrice = document.getElementById('pOldPrice').value;
+            const image = document.getElementById('pImage').value;
+
+            if(!name || !price || !image) {
+                alert("Uzuza Izina, Igiciro n'Ifoto!");
+                return;
+            }
+
+            const items = fetchData();
+            items.unshift({ id: Date.now(), name, category, price, oldPrice, image, sold: "1" });
+            localStorage.setItem('ob_products', JSON.stringify(items));
+            
+            document.getElementById('pName').value = "";
+            document.getElementById('pPrice').value = "";
+            document.getElementById('pOldPrice').value = "";
+            document.getElementById('pImage').value = "";
+
+            filterItems();
+            showAdminList();
+            alert("Igicuruzwa cyongewe neza!");
+        }
+
+        function showAdminList() {
+            const box = document.getElementById('adminList');
+            const items = fetchData();
+            box.innerHTML = "";
+            if(items.length === 0) { box.innerHTML = "<div style='color:#888;'>Nta gicuruzwa kiriho.</div>"; return; }
+            items.forEach(p => {
+                box.innerHTML += `
+                    <div class="admin-item">
+                        <span><strong>${p.name.substring(0, 15)}...</strong> - ${p.price}</span>
+                        <button class="delete-btn" onclick="removeProduct(${p.id})">Siba</button>
+                    </div>
+                `;
+            });
+        }
+
+        function removeProduct(id) {
+            if(confirm("Uramya ko ushaka gusiba iki gicuruzwa?")) {
+                let items = fetchData().filter(p => p.id !== id);
+                localStorage.setItem('ob_products', JSON.stringify(items));
+                filterItems();
+                showAdminList();
+            }
+        }
+
+        function goNav(type) {
+            if(type === 'home' || type === 'shop') selectCat('all', document.getElementById('btnCatAll'));
+            if(type === 'cart') alert("Agaseke (Cart): Koresha akabuto ka WhatsApp 'Tumiza' kuri buri gicuruzwa!");
+        }
+
+        window.onload = function() {
+            if(localStorage.getItem('ob_dark') === 'true') switchTheme();
+            const lang = localStorage.getItem('ob_lang') || 'rw';
+            document.getElementById('langSelect').value = lang;
+            switchLanguage();
+        };
+    </script>
+</body>
+</html>
