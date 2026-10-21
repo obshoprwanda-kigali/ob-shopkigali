@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OB SHOP - Official Master Store</title>
+  <title id="pageTitle">OB SHOP - Official Master Store</title>
 
   <!-- Firebase Database SDKs -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -15,7 +15,7 @@
     body.dark-mode { background-color: #0f172a; color: #f8fafc; }
 
     /* Promo Ticker Bar */
-    .ticker-wrap { background: #f59e0b; color: #000; font-size: 11px; font-weight: 800; padding: 4px 0; overflow: hidden; white-space: nowrap; }
+    .ticker-wrap { background: #f59e0b; color: #000; font-size: 11px; font-weight: 800; padding: 5px 0; overflow: hidden; white-space: nowrap; }
     .ticker-move { display: inline-block; animation: ticker 15s linear infinite; }
     @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
@@ -24,6 +24,7 @@
     .logo { font-size: 20px; font-weight: 800; cursor: pointer; user-select: none; }
     .logo span { color: #f59e0b; }
     .header-actions { display: flex; align-items: center; gap: 10px; }
+    .lang-select { background: #f59e0b; color: #000; border: none; padding: 5px 10px; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; }
     .theme-btn { background: none; border: none; color: white; font-size: 18px; cursor: pointer; }
 
     /* Search & Camera Bar */
@@ -63,8 +64,8 @@
     .price { font-size: 11px; font-weight: 800; color: #dc2626; }
     
     .action-btns { display: flex; gap: 4px; margin-top: 6px; }
-    .order-btn { background: #25d366; color: white; border: none; border-radius: 4px; padding: 5px 2px; font-size: 9px; font-weight: bold; cursor: pointer; flex: 1; display: flex; align-items: center; justify-content: center; }
-    .cart-add-btn { background: #2563eb; color: white; border: none; border-radius: 4px; padding: 5px 6px; font-size: 10px; cursor: pointer; }
+    .order-btn { background: #25d366; color: white; border: none; border-radius: 4px; padding: 6px 2px; font-size: 9px; font-weight: bold; cursor: pointer; flex: 1; display: flex; align-items: center; justify-content: center; }
+    .cart-add-btn { background: #2563eb; color: white; border: none; border-radius: 4px; padding: 6px 8px; font-size: 10px; cursor: pointer; }
 
     /* Admin Delete Badge on Products */
     .admin-del-btn { position: absolute; top: 4px; right: 4px; background: #dc2626; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 10px; cursor: pointer; font-weight: bold; display: none; z-index: 5; }
@@ -77,7 +78,7 @@
     body.dark-mode .modal-card { background: #1e293b; color: white; }
     .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
     .modal-title { font-size: 16px; font-weight: bold; }
-    .close-btn { background: none; border: none; font-size: 22px; cursor: pointer; color: #94a3b8; }
+    .close-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: #94a3b8; }
 
     /* Cart Rows */
     .cart-item-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; background: #f1f5f9; padding: 8px; border-radius: 8px; margin-bottom: 6px; font-size: 12px; }
@@ -92,11 +93,11 @@
 
     .submit-order-btn { background: #059669; color: white; border: none; width: 100%; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: bold; cursor: pointer; }
 
-    /* FULL SCREEN ADMIN DASHBOARD (Paji yose 100% Full Screen) */
+    /* FULL SCREEN ADMIN DASHBOARD PAGE */
     .admin-full-page { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #0f172a; color: white; z-index: 2000; display: none; flex-direction: column; overflow-y: auto; padding: 20px; }
     .admin-full-page.active { display: flex; }
     .admin-header-bar { display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 1px solid #334155; margin-bottom: 20px; }
-    .admin-header-title { font-size: 20px; font-weight: 900; color: #f59e0b; display: flex; align-items: center; gap: 8px; }
+    .admin-header-title { font-size: 18px; font-weight: 900; color: #f59e0b; display: flex; align-items: center; gap: 8px; }
     .admin-close-btn { background: #dc2626; color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 13px; }
 
     .admin-report-card { background: #1e293b; color: white; padding: 18px; border-radius: 14px; display: flex; justify-content: space-around; margin-bottom: 20px; border: 1px solid #334155; }
@@ -125,6 +126,11 @@
   <header>
     <div class="logo" id="logoBtn">OB <span>SHOP</span></div>
     <div class="header-actions">
+      <!-- Language Switcher Selector -->
+      <select class="lang-select" id="langSelector" onchange="switchLanguage(this.value)">
+        <option value="rw">🇷🇼 Kinyarwanda</option>
+        <option value="en">🇬🇧 English</option>
+      </select>
       <button class="theme-btn" id="themeBtn">🌙</button>
     </div>
   </header>
@@ -140,22 +146,22 @@
 
   <!-- Categories Bar -->
   <div class="categories" id="catList">
-    <button class="cat-btn active" onclick="filterCat('All', this)">Byose</button>
-    <button class="cat-btn" onclick="filterCat('Shoes', this)">Inkweto</button>
-    <button class="cat-btn" onclick="filterCat('Clothes', this)">Imyenda</button>
-    <button class="cat-btn" onclick="filterCat('Food', this)">Ibiribwa</button>
-    <button class="cat-btn" onclick="filterCat('Drinks', this)">Ibinyobwa</button>
-    <button class="cat-btn" onclick="filterCat('Electronics', this)">Ikoranabuhanga</button>
+    <button class="cat-btn active" onclick="filterCat('All', this)" id="catAll">Byose</button>
+    <button class="cat-btn" onclick="filterCat('Shoes', this)" id="catShoes">Inkweto</button>
+    <button class="cat-btn" onclick="filterCat('Clothes', this)" id="catClothes">Imyenda</button>
+    <button class="cat-btn" onclick="filterCat('Food', this)" id="catFood">Ibiribwa</button>
+    <button class="cat-btn" onclick="filterCat('Drinks', this)" id="catDrinks">Ibinyobwa</button>
+    <button class="cat-btn" onclick="filterCat('Electronics', this)" id="catElectronics">Ikoranabuhanga</button>
   </div>
 
   <!-- Hero Banner -->
   <div class="hero-banner">
-    <span class="hero-tag">POROMOSIYO Y'UMUNSI</span>
+    <span class="hero-tag" id="heroTag">POROMOSIYO Y'UMUNSI</span>
     <h3 id="heroTitle">Smart Watch & Imyenda Bishya!</h3>
     <p id="heroDesc">Gana ibicuruzwa ku giciro cyiza cyane uyu munsi.</p>
   </div>
 
-  <div class="section-title">IBICURUZWA BYOSE</div>
+  <div class="section-title" id="sectionTitle">IBICURUZWA BYOSE</div>
 
   <!-- Product Grid (3 Columns Layout) -->
   <div class="product-grid" id="productGrid"></div>
@@ -164,35 +170,35 @@
   <div class="modal-overlay" id="cartModal">
     <div class="modal-card">
       <div class="modal-header">
-        <div class="modal-title">🛒 Agategobo Kawe (Cart)</div>
+        <div class="modal-title" id="cartModalTitle">🛒 Agategobo Kawe (Cart)</div>
         <button class="close-btn" onclick="closeCartModal()">✕</button>
       </div>
 
       <div id="cartItemsList"></div>
 
       <div class="cart-total-box">
-        <div>TOTAL YOSE:</div>
+        <div id="totalText">TOTAL YOSE:</div>
         <span id="cartTotalPrice">0 RWF</span>
       </div>
 
       <div class="form-group">
-        <label>Izina Ryose *</label>
+        <label id="labelName">Izina Ryose *</label>
         <input type="text" id="custName" placeholder="Urugero: Keza Alice">
       </div>
       <div class="form-group">
-        <label>Nimero ya Telefoni *</label>
+        <label id="labelPhone">Nimero ya Telefoni *</label>
         <input type="tel" id="custPhone" placeholder="078...">
       </div>
       <div class="form-group">
-        <label>Aho Uherereye (Location) *</label>
+        <label id="labelLoc">Aho Uherereye (Location) *</label>
         <input type="text" id="custLoc" placeholder="Kigali, Nyarugenge">
       </div>
 
-      <button class="submit-order-btn" onclick="checkoutWhatsApp()">💬 Tumiza Byose kuri WhatsApp</button>
+      <button class="submit-order-btn" id="submitOrderBtn" onclick="checkoutWhatsApp()">💬 Tumiza Byose kuri WhatsApp</button>
     </div>
   </div>
 
-  <!-- FULL SCREEN ADMIN DASHBOARD PAGE (Urupapuro runini 100% Full Screen) -->
+  <!-- FULL SCREEN ADMIN DASHBOARD PAGE -->
   <div class="admin-full-page" id="adminModal">
     <div class="admin-header-bar">
       <div class="admin-header-title">⚙️ OB SHOP - Full Admin Management Panel</div>
@@ -261,49 +267,4 @@
     </div>
 
     <!-- 4. Live Orders List -->
-    <div style="background:#1e293b; padding:18px; border-radius:12px; border:1px solid #334155;">
-      <div class="admin-sec-title">📊 4. Live Orders List (Amada Yose Yaje)</div>
-      <div style="overflow-x:auto;">
-        <table class="order-table">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Customer</th>
-              <th>Item(s)</th>
-              <th>Loc</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody id="ordersTableBody">
-            <tr><td colspan="5" style="text-align:center;">Gushakisha amada...</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <!-- Bottom Navigation Bar -->
-  <div class="nav-bar">
-    <div class="nav-item active" onclick="window.scrollTo(0,0)">
-      🏠 <span>Home</span>
-    </div>
-    <div class="nav-item" onclick="filterCat('All', document.querySelector('.cat-btn'))">
-      🛍️ <span>Shop</span>
-    </div>
-    <div class="nav-item" onclick="openCartModal()">
-      🛒 <span>Cart</span>
-      <div class="nav-cart-badge" id="cartBadge">0</div>
-    </div>
-  </div>
-
-  <script>
-    // Firebase Setup
-    const firebaseConfig = { databaseURL: "https://ob-shop-default-rtdb.firebaseio.com/" };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-
-    let defaultProducts = [
-      { id: 1, name: "Ikanzu", price: 15000, cat: "Clothes", img: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300" },
-      { id: 2, name: "Ikweto", price: 12000, cat: "Shoes", img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300" },
-      { id: 3, name: "Smart Watch", price: 35000, cat: "Electronics", img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300" },
-      { id: 4, name: "Umuceri (Kg)", price: 2000, cat: "Food", img: "
+    <div style="background:#1e293b; padding:18px; border-radius:12px; border:1px solid #33
