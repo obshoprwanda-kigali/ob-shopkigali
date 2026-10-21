@@ -26,7 +26,7 @@
     .search-container { padding: 12px 16px; background: #003366; }
     .search-box { display: flex; background: white; border-radius: 20px; padding: 6px 14px; align-items: center; gap: 8px; }
     body.dark-mode .search-box { background: #1e293b; }
-    .search-box input { border: none; outline: none; width: 100%; font-size: 14px; background: transparent; color: inherit; }
+    .search-box input { border: none; outline: none; width: 100%; font-size: 13px; background: transparent; color: inherit; }
     .camera-btn { background: none; border: none; font-size: 18px; cursor: pointer; color: #003366; }
     body.dark-mode .camera-btn { color: #f59e0b; }
 
@@ -45,22 +45,25 @@
     .section-title { font-size: 14px; font-weight: 800; padding: 10px 16px 4px; text-transform: uppercase; color: #003366; letter-spacing: 0.5px; }
     body.dark-mode .section-title { color: #f59e0b; }
 
-    /* Product Grid */
-    .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 8px 16px; }
-    .product-card { background: white; border-radius: 12px; padding: 10px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+    /* Product Grid - Hano niho hahinduwe hagiyeho 3 Columns */
+    .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 8px 12px; }
+    @media (max-width: 600px) {
+      .product-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 6px 8px; }
+    }
+    .product-card { background: white; border-radius: 10px; padding: 6px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
     body.dark-mode .product-card { background: #1e293b; }
-    .product-img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 8px; background: #e2e8f0; }
-    .badge-wrap { display: flex; gap: 4px; margin-top: 6px; }
-    .badge { font-size: 8px; font-weight: bold; padding: 2px 4px; border-radius: 4px; }
+    .product-img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 6px; background: #e2e8f0; }
+    .badge-wrap { display: flex; gap: 2px; margin-top: 4px; }
+    .badge { font-size: 7px; font-weight: bold; padding: 1px 3px; border-radius: 3px; }
     .badge-ob { background: #dbeafe; color: #1e40af; }
     .badge-free { background: #dcfce7; color: #166534; }
-    .product-title { font-size: 12px; font-weight: 700; margin: 4px 0 2px; }
-    .rating { font-size: 9px; color: #f59e0b; margin-bottom: 4px; }
-    .price { font-size: 12px; font-weight: 800; color: #dc2626; }
+    .product-title { font-size: 10px; font-weight: 700; margin: 3px 0 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .rating { font-size: 8px; color: #f59e0b; margin-bottom: 2px; }
+    .price { font-size: 10px; font-weight: 800; color: #dc2626; }
     
-    .action-btns { display: flex; gap: 6px; margin-top: 8px; }
-    .order-btn { background: #25d366; color: white; border: none; border-radius: 6px; padding: 6px; font-size: 10px; font-weight: bold; cursor: pointer; flex: 1; display: flex; align-items: center; justify-content: center; gap: 4px; }
-    .cart-add-btn { background: #2563eb; color: white; border: none; border-radius: 6px; padding: 6px 10px; font-size: 11px; cursor: pointer; }
+    .action-btns { display: flex; gap: 4px; margin-top: 6px; }
+    .order-btn { background: #25d366; color: white; border: none; border-radius: 4px; padding: 4px; font-size: 9px; font-weight: bold; cursor: pointer; flex: 1; display: flex; align-items: center; justify-content: center; }
+    .cart-add-btn { background: #2563eb; color: white; border: none; border-radius: 4px; padding: 4px 6px; font-size: 10px; cursor: pointer; }
 
     /* Modal Overlay */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; align-items: flex-end; justify-content: center; z-index: 1000; backdrop-filter: blur(2px); }
@@ -84,10 +87,15 @@
 
     .submit-order-btn { background: #059669; color: white; border: none; width: 100%; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: bold; cursor: pointer; }
 
-    /* Bottom Navigation Bar (Gihamye Neza) */
+    /* Admin Modal CSS */
+    .admin-report-card { background: #003366; color: white; padding: 12px; border-radius: 10px; display: flex; justify-content: space-around; margin-bottom: 12px; }
+    .order-table { width: 100%; border-collapse: collapse; font-size: 10px; text-align: left; margin-top: 8px; }
+    .order-table th, .order-table td { padding: 6px; border-bottom: 1px solid #e2e8f0; }
+
+    /* Bottom Navigation Bar */
     .nav-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: white; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-around; padding: 10px 0; z-index: 90; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
     body.dark-mode .nav-bar { background: #1e293b; border-color: #334155; }
-    .nav-item { display: flex; flex-direction: column; align-items: center; color: #64748b; font-size: 11px; font-weight: bold; text-decoration: none; cursor: pointer; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; color: #64748b; font-size: 11px; font-weight: bold; text-decoration: none; cursor: pointer; position: relative; }
     .nav-item.active { color: #003366; }
     body.dark-mode .nav-item.active { color: #f59e0b; }
     .nav-cart-badge { background: #dc2626; color: white; font-size: 9px; padding: 1px 5px; border-radius: 10px; position: absolute; margin-top: -15px; margin-left: 15px; }
@@ -116,7 +124,7 @@
     </div>
   </div>
 
-  <!-- Categories Bar (Byose, Inkweto, Imyenda, Ibiribwa, Ibinyobwa, Ikoranabuhanga) -->
+  <!-- Categories Bar -->
   <div class="categories" id="catList">
     <button class="cat-btn active" onclick="filterCat('All', this)">Byose</button>
     <button class="cat-btn" onclick="filterCat('Shoes', this)">Inkweto</button>
@@ -135,7 +143,7 @@
 
   <div class="section-title">IBICURUZWA BYOSE</div>
 
-  <!-- Product Grid -->
+  <!-- Product Grid (3 Columns) -->
   <div class="product-grid" id="productGrid"></div>
 
   <!-- Cart Modal -->
@@ -170,6 +178,39 @@
     </div>
   </div>
 
+  <!-- Admin Modal -->
+  <div class="modal-overlay" id="adminModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">⚙️ Admin Dashboard & Reports</div>
+        <button class="close-btn" onclick="closeAdminModal()">✕</button>
+      </div>
+
+      <div class="admin-report-card">
+        <div>TOTAL ORDERS: <b id="repTotalOrders">0</b></div>
+        <div>REVENUE: <b id="repTotalRevenue">0 RWF</b></div>
+      </div>
+
+      <h4 style="font-size:12px; margin-bottom:6px;">📦 LIVE ORDERS LIST</h4>
+      <div style="overflow-x:auto;">
+        <table class="order-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Customer</th>
+              <th>Item(s)</th>
+              <th>Loc</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody id="ordersTableBody">
+            <tr><td colspan="5" style="text-align:center;">Gushakisha amada...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
   <!-- Bottom Navigation Bar -->
   <div class="nav-bar">
     <div class="nav-item active" onclick="window.scrollTo(0,0)">
@@ -190,7 +231,6 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // Products Data
     let products = [
       { id: 1, name: "Ikanzu", price: 15000, cat: "Clothes", img: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300" },
       { id: 2, name: "Ikweto", price: 12000, cat: "Shoes", img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300" },
@@ -205,7 +245,7 @@
       const grid = document.getElementById('productGrid');
       grid.innerHTML = '';
       if(items.length === 0) {
-        grid.innerHTML = `<div style="grid-column: span 2; text-align:center; padding:20px;">Nta gicuruzwa cyabonetse...</div>`;
+        grid.innerHTML = `<div style="grid-column: span 3; text-align:center; padding:20px;">Nta gicuruzwa cyabonetse...</div>`;
         return;
       }
       items.forEach(p => {
@@ -215,10 +255,10 @@
               <img src="${p.img}" class="product-img" alt="${p.name}">
               <div class="badge-wrap">
                 <span class="badge badge-ob">OB</span>
-                <span class="badge badge-free">FREE DELIVERY</span>
+                <span class="badge badge-free">FREE</span>
               </div>
               <div class="product-title">${p.name}</div>
-              <div class="rating">★ 5.0 (1 sold)</div>
+              <div class="rating">★ 5.0</div>
               <div class="price">${p.price.toLocaleString()} RWF</div>
             </div>
             <div class="action-btns">
@@ -315,7 +355,6 @@
       });
       text += `\n💰 *TOTAL YOSE:* ${total.toLocaleString()} RWF\n\n👤 *Izina:* ${name}\n📞 *Phone:* ${phone}\n📍 *Location:* ${loc}\n\nTubazanire ibyo mwatumije? Dusubize YEGO. 🤝`;
 
-      // Save to Firebase
       db.ref('orders').push({ customerName: name, phone, location: loc, items: cart, totalPrice: total, date: new Date().toLocaleString() });
 
       window.open(`https://wa.me/250780073151?text=${encodeURIComponent(text)}`, '_blank');
@@ -350,10 +389,56 @@
       if(clicks === 3) {
         clicks = 0;
         const pass = prompt("Admin Password:");
-        if(pass === "obshop123") { alert("Admin Access Granted!"); }
+        if(pass === "obshop123") {
+          loadAdminReports();
+          document.getElementById('adminModal').classList.add('active');
+        } else {
+          alert("Password si yo!");
+        }
       }
       setTimeout(() => clicks = 0, 1000);
     });
+
+    function closeAdminModal() {
+      document.getElementById('adminModal').classList.remove('active');
+    }
+
+    function loadAdminReports() {
+      db.ref('orders').on('value', snapshot => {
+        const data = snapshot.val();
+        const tbody = document.getElementById('ordersTableBody');
+        tbody.innerHTML = '';
+
+        if (!data) {
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Nta oda iraza...</td></tr>`;
+          document.getElementById('repTotalOrders').innerText = "0";
+          document.getElementById('repTotalRevenue').innerText = "0 RWF";
+          return;
+        }
+
+        let totalOrders = 0;
+        let totalRevenue = 0;
+
+        Object.keys(data).reverse().forEach(key => {
+          const o = data[key];
+          totalOrders++;
+          totalRevenue += Number(o.totalPrice || 0);
+
+          tbody.innerHTML += `
+            <tr>
+              <td><small>${o.date ? o.date.split(',')[0] : 'Today'}</small></td>
+              <td><b>${o.customerName}</b><br><small>${o.phone}</small></td>
+              <td>${o.items ? o.items.length + ' items' : '1 item'}</td>
+              <td>${o.location}</td>
+              <td><b>${Number(o.totalPrice || 0).toLocaleString()} RWF</b></td>
+            </tr>
+          `;
+        });
+
+        document.getElementById('repTotalOrders').innerText = totalOrders;
+        document.getElementById('repTotalRevenue').innerText = totalRevenue.toLocaleString() + " RWF";
+      });
+    }
 
     // Initial
     renderProducts(products);
