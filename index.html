@@ -263,4 +263,76 @@
               <th>Total</th>
             </tr>
           </thead>
-          <tbody id="
+          <tbody id="ordersTableBody">
+            <tr><td colspan="4" style="text-align:center;">Gushakisha amada...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation Bar -->
+  <div class="nav-bar">
+    <div class="nav-item active" onclick="window.scrollTo(0,0)">
+      🏠 <span id="navHome">Home</span>
+    </div>
+    <div class="nav-item" onclick="filterCat('All', document.querySelector('.cat-btn'))">
+      🛍️ <span id="navShop">Shop</span>
+    </div>
+    <div class="nav-item" onclick="openCartModal()">
+      🛒 <span id="navCart">Cart</span>
+      <div class="nav-cart-badge" id="cartBadge">0</div>
+    </div>
+  </div>
+
+  <script>
+    // Firebase Database Config
+    const firebaseConfig = { databaseURL: "https://ob-shop-default-rtdb.firebaseio.com/" };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    let defaultProducts = [
+      { id: 1, name: "Ikanzu", price: 15000, cat: "Clothes", img: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300" },
+      { id: 2, name: "Ikweto", price: 12000, cat: "Shoes", img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300" },
+      { id: 3, name: "Smart Watch", price: 35000, cat: "Electronics", img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300" },
+      { id: 4, name: "Umuceri (Kg)", price: 2000, cat: "Food", img: "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=300" },
+      { id: 5, name: "Fanta Orange", price: 1000, cat: "Drinks", img: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=300" }
+    ];
+
+    let products = JSON.parse(localStorage.getItem('ob_products')) || defaultProducts;
+    let cart = JSON.parse(localStorage.getItem('ob_cart')) || [];
+    let currentLang = localStorage.getItem('ob_lang') || 'rw';
+
+    const dict = {
+      rw: { searchPlaceholder: "Shakisha igicuruzwa...", catAll: "Byose", catShoes: "Inkweto", catClothes: "Imyenda", catFood: "Ibiribwa", catDrinks: "Ibinyobwa", catElectronics: "Ikoranabuhanga", heroTag: "POROMOSIYO Y'UMUNSI", heroTitle: "Smart Watch & Imyenda Bishya!", heroDesc: "Gana ibicuruzwa ku giciro cyiza cyane uyu munsi.", sectionTitle: "IBICURUZWA BYOSE", orderBtn: "💬 Order", cartModalTitle: "🛒 Agategobo Kawe (Cart)", totalText: "TOTAL YOSE:", labelName: "Izina Ryose *", labelPhone: "Nimero ya Telefoni *", labelLoc: "Aho Uherereye (Location) *", submitOrderBtn: "💬 Tumiza Byose kuri WhatsApp", navHome: "Home", navShop: "Shop", navCart: "Cart", emptyCart: "Agategobo kawe karagaye!" },
+      en: { searchPlaceholder: "Search product...", catAll: "All", catShoes: "Shoes", catClothes: "Clothes", catFood: "Food", catDrinks: "Drinks", catElectronics: "Electronics", heroTag: "TODAY'S PROMO", heroTitle: "New Smart Watch & Clothing!", heroDesc: "Get products at the best price today.", sectionTitle: "ALL PRODUCTS", orderBtn: "💬 Order", cartModalTitle: "🛒 Your Shopping Cart", totalText: "GRAND TOTAL:", labelName: "Full Name *", labelPhone: "Phone Number *", labelLoc: "Delivery Location *", submitOrderBtn: "💬 Checkout via WhatsApp", navHome: "Home", navShop: "Shop", navCart: "Cart", emptyCart: "Your cart is empty!" }
+    };
+
+    function switchLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('ob_lang', lang);
+      applyTranslations();
+    }
+
+    function applyTranslations() {
+      const t = dict[currentLang];
+      document.getElementById('searchInput').placeholder = t.searchPlaceholder;
+      document.getElementById('catAll').innerText = t.catAll;
+      document.getElementById('catShoes').innerText = t.catShoes;
+      document.getElementById('catClothes').innerText = t.catClothes;
+      document.getElementById('catFood').innerText = t.catFood;
+      document.getElementById('catDrinks').innerText = t.catDrinks;
+      document.getElementById('catElectronics').innerText = t.catElectronics;
+      document.getElementById('heroTag').innerText = t.heroTag;
+      document.getElementById('heroTitle').innerText = t.heroTitle;
+      document.getElementById('heroDesc').innerText = t.heroDesc;
+      document.getElementById('sectionTitle').innerText = t.sectionTitle;
+      document.getElementById('cartModalTitle').innerText = t.cartModalTitle;
+      document.getElementById('totalText').innerText = t.totalText;
+      document.getElementById('labelName').innerText = t.labelName;
+      document.getElementById('labelPhone').innerText = t.labelPhone;
+      document.getElementById('labelLoc').innerText = t.labelLoc;
+      document.getElementById('submitOrderBtn').innerText = t.submitOrderBtn;
+      document.getElementById('navHome').innerText = t.navHome;
+      document.getElementById('navShop').innerText = t.navShop;
+      document.getElementById('navCart').inn
